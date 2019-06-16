@@ -1,16 +1,19 @@
-﻿using System;
+﻿#define ThreadTrack
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 
 namespace LE_Entities.Tool
 {
-    class SafetyQueue<T>:ISafetyQueue<T>
+    class SafetyQueue<T> : ISafetyQueue<T>
     {
         private readonly Queue<T> queue;
+
         private int mark;
 
-        public int Count => queue.Count;
+        public int Count => mark == 1 ? -1 : queue.Count;
 
         public SafetyQueue()
         {
@@ -20,7 +23,7 @@ namespace LE_Entities.Tool
 
         private bool Get()
         {
-            if(Interlocked.CompareExchange(ref mark,1, 0)==0)
+            if (Interlocked.CompareExchange(ref mark, 1, 0) == 0)
             {
                 return true;
             }
@@ -32,38 +35,50 @@ namespace LE_Entities.Tool
 
         public bool Dequeue(out T data)
         {
-            if (Get())
+            while (true)
             {
-                if (queue.Count > 0)
+                if (Get())
                 {
-                    data = queue.Dequeue();
-                    
+                    if (queue.Count > 0)
+                    {
+                        data = queue.Dequeue();
+                        mark = 0;
+                        return true;
+                    }
+                    else
+                    {
+                        data = default;
+                        mark = 0;
+                        return false;
+                    }
                 }
                 else
                 {
-                    data = default;
+#if ThreadTrack
+                    ThreadTracker.ThreadTracker.AddTimes(string.Format("id:{0},name:{1}"
+                        , Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name));
+#endif
                 }
-                mark = 0;
-                return true;
-            }
-            else
-            {
-                data = default;
-                return false;
             }
         }
 
         public bool Enqueue(T data)
         {
-            if (Get())
+            while (true)
             {
-                queue.Enqueue(data);
-                mark = 0;
-                return true;
-            }
-            else
-            {
-                return false;
+                if (Get())
+                {
+                    queue.Enqueue(data);
+                    mark = 0;
+                    return true;
+                }
+                else
+                {
+#if ThreadTrack
+                    ThreadTracker.ThreadTracker.AddTimes(string.Format("id:{0},name:{1}"
+                        , Thread.CurrentThread.ManagedThreadId, Thread.CurrentThread.Name));
+#endif
+                }
             }
         }
 

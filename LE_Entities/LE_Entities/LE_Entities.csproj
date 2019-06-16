@@ -10,10 +10,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Data\" />
-    <Folder Include="VThread\" />
-    <Folder Include="EventSystem\" />
-  </ItemGroup>
-
 </Project>
