@@ -12,6 +12,10 @@ namespace LE_Entities.VThread
 
         int Id { get; }
 
+        int ThreadId { get; set; }
+
+        void SetAction(IProcess process);
+
         void SetAction(VThreadState state,VThreadAction vThreadAction);
     }
 }

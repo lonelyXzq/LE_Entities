@@ -9,11 +9,13 @@ namespace LE_Entities.VThread
         private readonly string name;
         private readonly int id;
         private readonly VThreadAction[] vThreadActions;
-
+        private int threadId;
 
         public string Name => name;
 
         public int Id => id;
+
+        public int ThreadId { get => threadId; set => threadId = value; }
 
         public VThread(string name = null)
         {
@@ -22,6 +24,15 @@ namespace LE_Entities.VThread
             id = IdManager.IdDeliverer<VThread>.GetNextId();
         }
 
+
+        public void SetAction(IProcess process)
+        {
+            vThreadActions[0] = process.OnInit;
+            vThreadActions[1] = process.OnStart;
+            vThreadActions[2] = process.OnUpdate;
+            vThreadActions[3] = process.OnEnd;
+            vThreadActions[4] = process.OnDestory;
+        }
 
         public void SetAction(VThreadState state, VThreadAction vThreadAction)
         {

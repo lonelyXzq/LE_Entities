@@ -10,13 +10,13 @@ namespace LE_Entities.EventSystem
 
         private int count;
 
-        private int maxOperatorNumber;
+        private readonly int maxOperatorNumber;
 
         private readonly Dictionary<int, EventHandler<T>> events;
 
-        private EventPoolMode eventPoolMode;
+        private readonly EventPoolMode eventPoolMode;
 
-        private SafetyQueue<LE_Event<T>> eventList;
+        private readonly SafetyQueue<LE_Event<T>> eventList;
 
         public int Count => count;
 

@@ -1,19 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using LE_Entities.VThread;
 
 namespace LE_Entities.EventSystem
 {
-    class EventManager<T> where T:EventArgs
+    public static class EventManager<T> where T:EventArgs
     {
-        private EventPool<T> eventPool;
-        private VThread.VThread thread;
+        private static EventPool<T> eventPool;
+        private static readonly VThread.VThread thread;
 
-        public EventManager(EventPoolMode mode)
+        static EventManager()
+        {
+            thread = new VThread.VThread();
+            thread.SetAction(eventPool);
+        }
+
+        public static void OnInit(EventPoolMode mode)
         {
             eventPool = new EventPool<T>(mode);
-            thread = new VThread.VThread();
-            thread.SetAction(VThread.VThreadState.Update, eventPool.OnUpdate);
         }
+
+        public static EventPool<T> EventPool => eventPool;
+
     }
 }
