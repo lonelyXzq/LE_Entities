@@ -6,11 +6,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace LE_EntitiesTests
 {
-    class A
+    class A0
     {
         public string id;
 
-        public A(string id)
+        public A0(string id)
         {
             this.id = id;
         }
@@ -20,7 +20,7 @@ namespace LE_EntitiesTests
     {
         private const int Number = 8;
         private Thread[] threads;
-        private SafetyQueue<A> queue;
+        private SafetyQueue<A0> queue;
 
         [TestInitialize]
         public void Init()
@@ -33,7 +33,7 @@ namespace LE_EntitiesTests
                     Name = i.ToString()
                 };
             }
-            queue = new SafetyQueue<A>();
+            queue = new SafetyQueue<A0>();
         }
         [TestMethod]
         public void BaseSafetyQuueTest()
@@ -46,7 +46,7 @@ namespace LE_EntitiesTests
             //.Sleep(100);
             for (int i = 0; i < 80020; i++)
             {
-                A a;
+                A0 a;
                 if (queue.Dequeue(out a))
                 {
                     //Console.WriteLine(i + ":"+a.id);
@@ -63,7 +63,7 @@ namespace LE_EntitiesTests
         {
             for (int i = 0; i < 5000; i++)
             {
-                queue.Enqueue(new A(string.Format("name:{0},id:{1}", Thread.CurrentThread.Name, i)));
+                queue.Enqueue(new A0(string.Format("name:{0},id:{1}", Thread.CurrentThread.Name, i)));
             }
         }
     }

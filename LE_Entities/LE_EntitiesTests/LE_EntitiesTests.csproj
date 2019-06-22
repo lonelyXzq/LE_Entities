@@ -52,6 +52,7 @@
     <Compile Include="IdManagerTests.cs" />
     <Compile Include="SafetyQueueTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SListTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

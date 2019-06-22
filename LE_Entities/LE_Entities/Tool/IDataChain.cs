@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Tool
 {
-    public delegate void Seek<T>(T data);
+    public delegate bool Seek<T>(T data);
     interface IDataChain<T>
     {
         bool CheckData(int id);
