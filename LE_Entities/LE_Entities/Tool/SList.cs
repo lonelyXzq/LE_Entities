@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Tool
 {
-    class SList<T>:ISList<T>
+    class SList<T> : ISList<T>
     {
         private readonly List<ListData> datas;
         private int addPoint;
@@ -32,13 +32,13 @@ namespace LE_Entities.Tool
             }
         }
 
-        public int Count  => count;
-        public int Length  => maxLength;
+        public int Count => count;
+        public int Length => maxLength;
 
         public int Add(T data)
         {
-            int re = -1;
-            if (addPoint == -1)
+            int re;
+            if (addPoint < 0)
             {
                 datas.Add(new ListData(-1, data));
                 re = count;
@@ -62,7 +62,8 @@ namespace LE_Entities.Tool
             if (index < 0 || index >= datas.Count)
             {
                 return false;
-            }else if (datas[index].Id == -1)
+            }
+            else if (datas[index].Id == -1)
             {
                 return true;
             }
@@ -86,7 +87,7 @@ namespace LE_Entities.Tool
             List<T> re = new List<T>();
             for (int i = 0; i < maxLength; i++)
             {
-                if (datas[i].Data != null && seek(datas[i].Data))
+                if (datas[i].Id == -1 && seek(datas[i].Data))
                 {
                     re.Add(datas[i].Data);
                 }
@@ -100,7 +101,7 @@ namespace LE_Entities.Tool
             int j = 0;
             for (int i = 0; i < maxLength; i++)
             {
-                if (datas[i].Data!=null)
+                if (datas[i].Id == -1)
                 {
                     re[j] = datas[i].Data;
                     j++;
@@ -114,6 +115,7 @@ namespace LE_Entities.Tool
             if (Check(index))
             {
                 datas[index].Data = default;
+                datas[index].Id = -2;
                 count--;
                 if (lastPoint > -1)
                 {

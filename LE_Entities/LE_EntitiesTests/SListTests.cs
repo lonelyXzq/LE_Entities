@@ -56,7 +56,7 @@ namespace LE_EntitiesTests
             list.Remove(7);
             list.Remove(6);
             list.Remove(5);
-            Assert.AreEqual(list.Length,8);
+            Assert.AreEqual(list.Length, 8);
             Assert.AreEqual(list.Count, 5);
             list.Remove(7);
             list.Remove(4);
@@ -113,6 +113,33 @@ namespace LE_EntitiesTests
             for (int i = 0; i < res.Length; i++)
             {
                 Assert.AreEqual(res[i].A1, als[i]);
+            }
+        }
+
+        [TestMethod]
+        public void FindDataTest()
+        {
+            Init();
+            A[] res = list.FindData(Seek);
+            int[] als = new int[]
+            {
+               2,4
+            };
+            for (int i = 0; i < res.Length; i++)
+            {
+                Assert.AreEqual(res[i].A1, als[i]);
+            }
+        }
+
+        bool Seek(A a)
+        {
+            if (a.A1 % 2 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
         class A

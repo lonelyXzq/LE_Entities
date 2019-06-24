@@ -7,23 +7,40 @@ namespace LE_Entities.Entity
 {
     class Entity:IEntity
     {
-        public string Name => throw new NotImplementedException();
+        private readonly string name;
+        private readonly int id;
+        private readonly int[] datas;
 
-        public int Id => throw new NotImplementedException();
+        public Entity(string name, int id)
+        {
+            this.name = name;
+            this.id = id;
+            this.datas = new int[DataManager.Count];
+        }
+
+        public string Name => name;
+
+        public int Id => id;
 
         public bool AddData<T>(T data) where T : IData
         {
-            throw new NotImplementedException();
+            if (datas[DataInfo<T>.DataId] > 0)
+            {
+                return false;
+            }
+            datas[DataInfo<T>.DataId] = DataInfo<T>.DataChain.Add(data);
+            return true;
         }
 
         public T GetData<T>() where T : IData
         {
-            throw new NotImplementedException();
+            return DataInfo<T>.DataChain.GetData(datas[DataInfo<T>.DataId]);
         }
 
         public void RemoveData<T>() where T : IData
         {
-            throw new NotImplementedException();
+            DataInfo<T>.DataChain.RemoveData(datas[DataInfo<T>.DataId]);
+            datas[DataInfo<T>.DataId] = 0;
         }
     }
 }

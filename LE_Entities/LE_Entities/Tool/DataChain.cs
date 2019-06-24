@@ -6,36 +6,46 @@ namespace LE_Entities.Tool
 {
     class DataChain<T> : IDataChain<T>
     {
+        private readonly SList<T> datas;
 
+        public DataChain(T defualtData= default)
+        {
+            datas = new SList<T>();
+            datas.Add(defualtData);
+        }
 
         public bool CheckData(int id)
         {
-            throw new NotImplementedException();
+            return datas.Check(id);
         }
 
         public T[] FindData(Seek<T> seek)
         {
-            throw new NotImplementedException();
+            return datas.FindData(seek);
         }
 
         public T[] GetAllData()
         {
-            throw new NotImplementedException();
+            return datas.GetAllDatas();
         }
 
         public T GetData(int id)
         {
-            throw new NotImplementedException();
+            if (CheckData(id))
+            {
+                return datas[id];
+            }
+            return default;
         }
 
         public int Add(T data)
         {
-            throw new NotImplementedException();
+            return datas.Add(data);
         }
 
         public void RemoveData(int id)
         {
-            throw new NotImplementedException();
+            datas.Remove(id);
         }
     }
 }
