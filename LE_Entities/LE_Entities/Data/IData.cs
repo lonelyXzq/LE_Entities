@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Data
 {
-    interface IData
+    public interface IData
     {
 
     }

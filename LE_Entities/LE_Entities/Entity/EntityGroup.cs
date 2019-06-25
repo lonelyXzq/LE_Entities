@@ -6,12 +6,12 @@ namespace LE_Entities.Entity
 {
 
 
-    class BaseEntityGroup : IBaseEntityGroup
+    public abstract class EntityGroup : IEntityGroup
     {
         private readonly string name;
         private readonly int id;
 
-        public BaseEntityGroup(string name, int id)
+        public EntityGroup(string name, int id)
         {
             this.name = name;
             this.id = id;
@@ -42,12 +42,4 @@ namespace LE_Entities.Entity
         }
     }
 
-    class EntityGroup : BaseEntityGroup
-    {
-        public EntityGroup(string name, int id)
-            :base(name,id)
-        {
-
-        }
-    }
 }

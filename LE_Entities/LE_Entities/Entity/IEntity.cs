@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    interface IEntity:IObject
+    interface IEntity:IObject,IData
     {
         bool AddData<T>(T data) where T : IData;
 
