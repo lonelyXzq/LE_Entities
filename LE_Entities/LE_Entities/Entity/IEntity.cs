@@ -12,5 +12,7 @@ namespace LE_Entities.Entity
         void RemoveData<T>() where T : IData;
 
         T GetData<T>() where T : IData;
+
+        bool TryGetData<T>(out T data) where T : IData;
     }
 }

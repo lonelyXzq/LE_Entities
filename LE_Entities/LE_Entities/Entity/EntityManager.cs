@@ -7,7 +7,8 @@ namespace LE_Entities.Entity
 {
     public static class EntityManager
     {
-        private static DataChain<Entity> dataChain;
+        private static readonly DataChain<Entity> dataChain;
 
+        internal static DataChain<Entity> DataChain => dataChain;
     }
 }

@@ -10,11 +10,14 @@ namespace LE_Entities.Entity
     {
         private readonly string name;
         private readonly int id;
+        private readonly HashSet<int> datas;
+        private readonly EntityType entityType;
 
         public EntityGroup(string name, int id)
         {
             this.name = name;
             this.id = id;
+            datas = new HashSet<int>();
         }
 
         public string Name => name;
@@ -31,6 +34,11 @@ namespace LE_Entities.Entity
 
         public virtual void OnUpdate()
         {
+            foreach (var data in datas)
+            {
+                entityType.Execute(data);
+                //EntityManager.DataChain.
+            }
         }
 
         public virtual void OnEnd()

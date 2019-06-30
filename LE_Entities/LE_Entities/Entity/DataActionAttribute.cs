@@ -4,20 +4,19 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-
     [AttributeUsage(AttributeTargets.Method, Inherited = false)]
-    public class EntityActionAttribute : Attribute
+    public class DataActionAttribute : Attribute
     {
-        private string groupName;
+        private Type dataType;
         private int level;
 
-        public EntityActionAttribute(string groupName, int level = 0)
+        public DataActionAttribute(Type dataType, int level = 0)
         {
-            this.groupName = groupName;
+            this.dataType = dataType;
             this.level = level;
         }
 
-        public string GroupName { get => groupName; set => groupName = value; }
+        
         public int Level { get => level; set => level = value; }
     }
 }

@@ -5,18 +5,16 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    interface IGroupAction
+    public interface ISystemAction
     {
         void Execute(int id);
     }
 
-
-
-    class GroupAction : IGroupAction
+    class SystemAction : ISystemAction
     {
         private readonly Execute actions;
 
-        public GroupAction(Execute actions)
+        public SystemAction(Execute actions)
         {
             this.actions = actions;
         }
@@ -27,11 +25,11 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1> : IGroupAction where T1 : IData
+    class SystemAction<T1> : ISystemAction where T1 : IData
     {
         private readonly Execute<T1> actions;
 
-        public GroupAction(Execute<T1> actions)
+        public SystemAction(Execute<T1> actions)
         {
             this.actions = actions;
         }
@@ -42,12 +40,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2> : IGroupAction
+    class SystemAction<T1, T2> : ISystemAction
         where T1 : IData where T2 : IData
     {
         private readonly Execute<T1, T2> actions;
 
-        public GroupAction(Execute<T1, T2> actions)
+        public SystemAction(Execute<T1, T2> actions)
         {
             this.actions = actions;
         }
@@ -58,12 +56,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3> : IGroupAction
+    class SystemAction<T1, T2, T3> : ISystemAction
         where T1 : IData where T2 : IData where T3 : IData
     {
         private readonly Execute<T1, T2, T3> actions;
 
-        public GroupAction(Execute<T1, T2, T3> actions)
+        public SystemAction(Execute<T1, T2, T3> actions)
         {
             this.actions = actions;
         }
@@ -74,12 +72,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3, T4> : IGroupAction
+    class SystemAction<T1, T2, T3, T4> : ISystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData
     {
         private readonly Execute<T1, T2, T3, T4> actions;
 
-        public GroupAction(Execute<T1, T2, T3, T4> actions)
+        public SystemAction(Execute<T1, T2, T3, T4> actions)
         {
             this.actions = actions;
         }
@@ -90,12 +88,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3, T4, T5> : IGroupAction
+    class SystemAction<T1, T2, T3, T4, T5> : ISystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5> actions;
 
-        public GroupAction(Execute<T1, T2, T3, T4, T5> actions)
+        public SystemAction(Execute<T1, T2, T3, T4, T5> actions)
         {
             this.actions = actions;
         }
@@ -108,12 +106,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3, T4, T5, T6> : IGroupAction
+    class SystemAction<T1, T2, T3, T4, T5, T6> : ISystemAction
          where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6> actions;
 
-        public GroupAction(Execute<T1, T2, T3, T4, T5, T6> actions)
+        public SystemAction(Execute<T1, T2, T3, T4, T5, T6> actions)
         {
             this.actions = actions;
         }
@@ -126,12 +124,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3, T4, T5, T6, T7> : IGroupAction
+    class SystemAction<T1, T2, T3, T4, T5, T6, T7> : ISystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6, T7> actions;
 
-        public GroupAction(Execute<T1, T2, T3, T4, T5, T6, T7> actions)
+        public SystemAction(Execute<T1, T2, T3, T4, T5, T6, T7> actions)
         {
             this.actions = actions;
         }
@@ -145,12 +143,12 @@ namespace LE_Entities.Entity
         }
     }
 
-    class GroupAction<T1, T2, T3, T4, T5, T6, T7, T8> : IGroupAction
+    class SystemAction<T1, T2, T3, T4, T5, T6, T7, T8> : ISystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData where T8 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
 
-        public GroupAction(Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions)
+        public SystemAction(Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions)
         {
             this.actions = actions;
         }
