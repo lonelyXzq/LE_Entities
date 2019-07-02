@@ -10,132 +10,166 @@ namespace LE_Entities.Entity
         void Execute(int id);
     }
 
-    class SystemAction : ISystemAction
+    abstract class BaseSystemAction : ISystemAction, IObject
     {
-        private readonly Execute actions;
+        private readonly string name;
 
-        public SystemAction(Execute actions)
+        private readonly int id;
+
+        public string Name => name;
+
+        public int Id => id;
+
+        public BaseSystemAction()
         {
-            this.actions = actions;
+            this.name = GetType().Name;
+            id = IdManager.IdDeliverer<ISystemAction>.GetNextId();
         }
 
-        public void Execute(int id)
+        public abstract void Execute(int id);
+    }
+    class SystemAction : BaseSystemAction
+    {
+        private Execute actions;
+
+        public override void Execute(int id)
         {
             actions?.Invoke(id);
         }
+
+        public void AddAction(IDataAction dataAction)
+        {
+            if (actions == null)
+            {
+                actions = dataAction.Execute;
+            }
+            else
+            {
+                actions += dataAction.Execute;
+            }
+        }
     }
 
-    class SystemAction<T1> : ISystemAction where T1 : IData
+    class SystemAction<T1> : BaseSystemAction where T1 : IData
     {
-        private readonly Execute<T1> actions;
+        private Execute<T1> actions;
 
-        public SystemAction(Execute<T1> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>());
         }
+
+        public void AddAction(IDataAction<T1> dataAction)
+        {
+            if (actions == null)
+            {
+                actions = dataAction.Execute;
+            }
+            else
+            {
+                actions += dataAction.Execute;
+            }
+        }
     }
 
-    class SystemAction<T1, T2> : ISystemAction
+    class SystemAction<T1, T2> : BaseSystemAction
         where T1 : IData where T2 : IData
     {
-        private readonly Execute<T1, T2> actions;
+        private Execute<T1, T2> actions;
 
-        public SystemAction(Execute<T1, T2> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
+
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>());
         }
+
+        public void AddAction(IDataAction<T1,T2> dataAction)
+        {
+            if (actions == null)
+            {
+                actions = dataAction.Execute;
+            }
+            else
+            {
+                actions += dataAction.Execute;
+            }
+        }
     }
 
-    class SystemAction<T1, T2, T3> : ISystemAction
+    class SystemAction<T1, T2, T3> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData
     {
-        private readonly Execute<T1, T2, T3> actions;
+        private Execute<T1, T2, T3> actions;
 
-        public SystemAction(Execute<T1, T2, T3> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>());
+        }
+
+        public void AddAction(IDataAction<T1, T2,T3> dataAction)
+        {
+            if (actions == null)
+            {
+                actions = dataAction.Execute;
+            }
+            else
+            {
+                actions += dataAction.Execute;
+            }
         }
     }
 
-    class SystemAction<T1, T2, T3, T4> : ISystemAction
+    class SystemAction<T1, T2, T3, T4> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData
     {
         private readonly Execute<T1, T2, T3, T4> actions;
 
-        public SystemAction(Execute<T1, T2, T3, T4> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>(), entity.GetData<T4>());
         }
     }
 
-    class SystemAction<T1, T2, T3, T4, T5> : ISystemAction
+    class SystemAction<T1, T2, T3, T4, T5> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5> actions;
 
-        public SystemAction(Execute<T1, T2, T3, T4, T5> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>());
         }
     }
 
-    class SystemAction<T1, T2, T3, T4, T5, T6> : ISystemAction
+    class SystemAction<T1, T2, T3, T4, T5, T6> : BaseSystemAction
          where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6> actions;
 
-        public SystemAction(Execute<T1, T2, T3, T4, T5, T6> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>());
         }
     }
 
-    class SystemAction<T1, T2, T3, T4, T5, T6, T7> : ISystemAction
+    class SystemAction<T1, T2, T3, T4, T5, T6, T7> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6, T7> actions;
 
-        public SystemAction(Execute<T1, T2, T3, T4, T5, T6, T7> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
@@ -143,18 +177,14 @@ namespace LE_Entities.Entity
         }
     }
 
-    class SystemAction<T1, T2, T3, T4, T5, T6, T7, T8> : ISystemAction
+    class SystemAction<T1, T2, T3, T4, T5, T6, T7, T8> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData where T8 : IData
     {
         private readonly Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
 
-        public SystemAction(Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions)
+        public override void Execute(int id)
         {
-            this.actions = actions;
-        }
-        public void Execute(int id)
-        {
-            Entity entity = DataInfo<Entity>.DataChain.GetData(id);
+            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()

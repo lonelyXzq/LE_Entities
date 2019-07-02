@@ -11,5 +11,11 @@ namespace LE_Entities.Data
         private static readonly DataChain<T> dataChain = new DataChain<T>();
 
         internal static DataChain<T> DataChain => dataChain;
+
+        public static void Init()
+        {
+            Console.WriteLine(DataId);
+        }
+
     }
 }

@@ -13,16 +13,19 @@ namespace LE_Entities.Entity
         private readonly HashSet<int> datas;
         private readonly EntityType entityType;
 
-        public EntityGroup(string name, int id)
+        public EntityGroup(string name, int id, EntityType entityType)
         {
             this.name = name;
             this.id = id;
             datas = new HashSet<int>();
+            this.entityType = entityType;
         }
 
         public string Name => name;
 
         public int Id => id;
+
+        public EntityType EntityType => entityType;
 
         public virtual void OnInit()
         {
