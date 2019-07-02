@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities
 {
-    interface IObject
+    public interface IObject
     {
         string Name { get; }
         int Id { get; }

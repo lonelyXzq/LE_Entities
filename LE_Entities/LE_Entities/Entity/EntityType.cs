@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    public abstract class EntityType: IObject
+    public abstract class EntityType : IEntityType
     {
         private string name;
         private readonly int id;

@@ -37,16 +37,9 @@ namespace LE_Entities.Entity
             actions?.Invoke(id);
         }
 
-        public void AddAction(IDataAction dataAction)
+        public void SetAction(IDataAction dataAction)
         {
-            if (actions == null)
-            {
                 actions = dataAction.Execute;
-            }
-            else
-            {
-                actions += dataAction.Execute;
-            }
         }
     }
 
@@ -60,16 +53,9 @@ namespace LE_Entities.Entity
             actions?.Invoke(id, entity.GetData<T1>());
         }
 
-        public void AddAction(IDataAction<T1> dataAction)
+        public void SetAction(IDataAction<T1> dataAction)
         {
-            if (actions == null)
-            {
-                actions = dataAction.Execute;
-            }
-            else
-            {
-                actions += dataAction.Execute;
-            }
+            actions = dataAction.Execute;
         }
     }
 
@@ -81,20 +67,12 @@ namespace LE_Entities.Entity
         public override void Execute(int id)
         {
             Entity entity = EntityManager.DataChain.GetData(id);
-
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>());
         }
 
-        public void AddAction(IDataAction<T1,T2> dataAction)
+        public void SetAction(IDataAction<T1, T2> dataAction)
         {
-            if (actions == null)
-            {
-                actions = dataAction.Execute;
-            }
-            else
-            {
-                actions += dataAction.Execute;
-            }
+            actions = dataAction.Execute;
         }
     }
 
@@ -109,35 +87,33 @@ namespace LE_Entities.Entity
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>());
         }
 
-        public void AddAction(IDataAction<T1, T2,T3> dataAction)
+        public void SetAction(IDataAction<T1, T2, T3> dataAction)
         {
-            if (actions == null)
-            {
-                actions = dataAction.Execute;
-            }
-            else
-            {
-                actions += dataAction.Execute;
-            }
+            actions = dataAction.Execute;
         }
     }
 
     class SystemAction<T1, T2, T3, T4> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData
     {
-        private readonly Execute<T1, T2, T3, T4> actions;
+        private Execute<T1, T2, T3, T4> actions;
 
         public override void Execute(int id)
         {
             Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>(), entity.GetData<T4>());
         }
+
+        public void SetAction(IDataAction<T1, T2, T3, T4> dataAction)
+        {
+            actions = dataAction.Execute;
+        }
     }
 
     class SystemAction<T1, T2, T3, T4, T5> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData
     {
-        private readonly Execute<T1, T2, T3, T4, T5> actions;
+        private Execute<T1, T2, T3, T4, T5> actions;
 
         public override void Execute(int id)
         {
@@ -146,12 +122,17 @@ namespace LE_Entities.Entity
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>());
         }
+
+        public void SetAction(IDataAction<T1, T2, T3, T4, T5> dataAction)
+        {
+            actions = dataAction.Execute;
+        }
     }
 
     class SystemAction<T1, T2, T3, T4, T5, T6> : BaseSystemAction
          where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData
     {
-        private readonly Execute<T1, T2, T3, T4, T5, T6> actions;
+        private Execute<T1, T2, T3, T4, T5, T6> actions;
 
         public override void Execute(int id)
         {
@@ -160,12 +141,16 @@ namespace LE_Entities.Entity
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>());
         }
+        public void SetAction(IDataAction<T1, T2, T3, T4, T5, T6> dataAction)
+        {
+            actions = dataAction.Execute;
+        }
     }
 
     class SystemAction<T1, T2, T3, T4, T5, T6, T7> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData
     {
-        private readonly Execute<T1, T2, T3, T4, T5, T6, T7> actions;
+        private Execute<T1, T2, T3, T4, T5, T6, T7> actions;
 
         public override void Execute(int id)
         {
@@ -175,12 +160,17 @@ namespace LE_Entities.Entity
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
                 , entity.GetData<T7>());
         }
+
+        public void SetAction(IDataAction<T1, T2, T3, T4, T5, T6, T7> dataAction)
+        {
+            actions = dataAction.Execute;
+        }
     }
 
     class SystemAction<T1, T2, T3, T4, T5, T6, T7, T8> : BaseSystemAction
         where T1 : IData where T2 : IData where T3 : IData where T4 : IData where T5 : IData where T6 : IData where T7 : IData where T8 : IData
     {
-        private readonly Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
+        private Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
 
         public override void Execute(int id)
         {
@@ -189,6 +179,11 @@ namespace LE_Entities.Entity
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
                 , entity.GetData<T7>(), entity.GetData<T8>());
+        }
+
+        public void SetAction(IDataAction<T1, T2, T3, T4, T5, T6, T7, T8> dataAction)
+        {
+            actions = dataAction.Execute;
         }
     }
 }

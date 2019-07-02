@@ -1,4 +1,5 @@
 ﻿using LE_Entities.Entity;
+using LE_Entities.LE_Type;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +10,24 @@ namespace LE_Entities.Action
 {
     static class GroupAction
     {
-        private static readonly Dictionary<string, EntityType> entityTypes=new Dictionary<string, EntityType>();
+        private static readonly Dictionary<string, EntityType> entityTypes = new Dictionary<string, EntityType>();
+        public static readonly int TypeCount;
+
+        static GroupAction()
+        {
+            Type bt = typeof(EntityType);
+            DateTime t0 = DateTime.Now;
+            var types = LEType.GetTypes(t => t.BaseType == bt);
+            TypeCount = types.Length;
+            foreach (var type in types)
+            {
+                entityTypes.Add(type.FullName, LEType.CreateInstance<EntityType>(type));
+            }
+            Console.WriteLine("Time:" + (DateTime.Now - t0).TotalMilliseconds);
+        }
 
         public static void Init()
         {
-            int count = 0;
-            var types = AppDomain.CurrentDomain.GetAssemblies()
-                .SelectMany(a => a.GetTypes().Where(t => t.BaseType==typeof(EntityType)))
-                .ToArray();
-            foreach (var type in types)
-            {
-
-                if (type.IsClass)
-                {
-                    count++;
-                    entityTypes.Add(type.FullName,type.Assembly.CreateInstance(type.FullName) as EntityType);
-                }
-            }
         }
 
         public static EntityType GetEntityType(Type type)

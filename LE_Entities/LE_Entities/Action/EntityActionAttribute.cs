@@ -5,11 +5,11 @@ using System.Text;
 namespace LE_Entities
 {
 
-    [AttributeUsage(AttributeTargets.Method, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class, Inherited = false)]
     public class EntityActionAttribute : Attribute
     {
-        private int level;
-        private Type type;
+        private readonly int level;
+        private readonly Type type;
 
 
         public EntityActionAttribute(Type type, int level = 0)
@@ -19,6 +19,7 @@ namespace LE_Entities
         }
 
         public int Level  => level; 
-        public Type Type  => type; 
+        public Type Type  => type;
+
     }
 }
