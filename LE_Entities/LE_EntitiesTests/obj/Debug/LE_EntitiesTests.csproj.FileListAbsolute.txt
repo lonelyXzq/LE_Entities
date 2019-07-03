@@ -17,3 +17,5 @@ D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\obj\Debug\LE_Enti
 D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\obj\Debug\LE_EntitiesTests.csproj.CopyComplete
 D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\obj\Debug\LE_EntitiesTests.dll
 D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\obj\Debug\LE_EntitiesTests.pdb
+D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\bin\Debug\LE_Log.dll
+D:\Github\LE_Projects\LE_Entities\LE_Entities\LE_EntitiesTests\bin\Debug\LE_Log.pdb

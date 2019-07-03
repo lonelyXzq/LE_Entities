@@ -1,29 +1,56 @@
-﻿using LE_Entities.Data;
+﻿using LE_Entities.Action;
+using LE_Entities.Data;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace LE_Entities.Entity
 {
-    public interface ISystemAction
+    public interface ISystemAction : IObject
     {
+        BitArray DataInfo { get; }
         void Execute(int id);
     }
 
-    abstract class BaseSystemAction : ISystemAction, IObject
+    abstract class BaseSystemAction : ISystemAction
     {
-        private readonly string name;
+        protected readonly string name;
 
         private readonly int id;
+
+        private readonly BitArray dataInfo;
 
         public string Name => name;
 
         public int Id => id;
 
+        public BitArray DataInfo => dataInfo;
+
         public BaseSystemAction()
         {
-            this.name = GetType().Name;
             id = IdManager.IdDeliverer<ISystemAction>.GetNextId();
+            Type type = GetType();
+            dataInfo = new BitArray(DataManager.Count);
+            Type[] dataTypes = type.GetGenericArguments();
+            Type dataIn = typeof(DataInfo<>);
+            //for (int i = 0; i < dataTypes.Length; i++)
+            //{
+            //    Console.WriteLine("dataType:" + dataTypes[i].Name);
+            //}
+            for (int i = 0; i < dataTypes.Length; i++)
+            {
+                int id = (int)dataIn.MakeGenericType(dataTypes[i]).GetField("dataId", BindingFlags.NonPublic | BindingFlags.Static)
+                    .GetValue(null);
+                dataInfo.Set(id, true);
+            }
+            //Console.WriteLine();
+            //for (int i = 0; i < dataInfo.Length; i++)
+            //{
+            //    Console.Write(dataInfo[i]);
+            //}
+            //Console.WriteLine();
         }
 
         public abstract void Execute(int id);
@@ -39,7 +66,7 @@ namespace LE_Entities.Entity
 
         public void SetAction(IDataAction dataAction)
         {
-                actions = dataAction.Execute;
+            actions = dataAction.Execute;
         }
     }
 

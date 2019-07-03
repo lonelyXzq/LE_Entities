@@ -17,11 +17,12 @@ namespace LE_Entities.Data
                 .ToArray();
             Type type1 = typeof(DataInfo<>);
             Count = types.Length;
-            foreach (var type in types)
+            for (int i = 0; i < types.Length; i++)
             {
-                Console.WriteLine(type.FullName);
-                type1.MakeGenericType(type).GetMethod("Init", BindingFlags.Static|BindingFlags.Public)
-                    .Invoke(null,null);
+                type1.MakeGenericType(types[i]).GetMethod("Init", BindingFlags.Static | BindingFlags.Public)
+                   .Invoke(null, null);
+                LE_Log.Log.Info("DataRegister", "DataId: {0}  DataName: {1}", i, types[i].FullName);
+
             }
         }
     }

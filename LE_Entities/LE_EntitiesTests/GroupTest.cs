@@ -26,7 +26,9 @@ namespace LE_EntitiesTests
             EntityManager.DataChain.Add(entity);
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
             ActionManager.Init();
-
+            GroupManager.GetEntityType(0).Execute(1);
+            Console.WriteLine();
+            GroupManager.GetEntityType(1).Execute(1);
             //LEAction lEAction = new LEAction();
             //Execute<A1, B1> action = lEAction.Execute;
         }
@@ -38,11 +40,14 @@ namespace LE_EntitiesTests
 
     public class GroupA : EntityType
     {
-
+        public A1 a1;
+        public B1 b1;
     }
     public class GroupB : EntityType
     {
-
+        public A1 a1;
+        public B1 b1;
+        public C1 c1;
     }
     public class A1 : IData
     {
@@ -64,8 +69,7 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, A1 t1, B1 t2)
         {
-            Console.WriteLine("2432333333333333333");
-            Console.WriteLine(id + ":");
+            Console.WriteLine("1");
         }
     }
 
@@ -73,16 +77,15 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, A1 t1, B1 t2)
         {
-            Console.WriteLine("2333333333333333");
-            Console.WriteLine(id + ":");
+            Console.WriteLine("2");
         }
     }
 
-    public class LE2 : IDataAction<A1>
+    public class LE2 : IDataAction<A1,C1>
     {
-        public void Execute(int id, A1 t1)
+        public void Execute(int id, A1 t1,C1 t2)
         {
-            Console.WriteLine(id+":23333333333");
+            Console.WriteLine("3");
         }
     }
 }

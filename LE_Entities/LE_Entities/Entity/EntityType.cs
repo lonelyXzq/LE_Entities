@@ -1,4 +1,6 @@
-﻿using System;
+﻿using LE_Entities.Data;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -10,13 +12,14 @@ namespace LE_Entities.Entity
         private readonly int id;
         private ISystemAction[] groupActions;
         private int actionCount;
+        private readonly BitArray dataInfo;
 
         protected EntityType()
         {
             this.name = GetType().Name;
+            dataInfo = new BitArray(DataManager.Count);
             id = IdManager.IdDeliverer<EntityType>.GetNextId();
-
-            Console.WriteLine(name + ":" + id);
+            LE_Log.Log.Info("TypeRegister", "TypeId: {0} TypeName: {1}", id, name);
         }
 
         public void SetName(string name)
@@ -40,5 +43,7 @@ namespace LE_Entities.Entity
         public string Name => name;
 
         public int Id => id;
+
+        public BitArray DataInfo => dataInfo;
     }
 }
