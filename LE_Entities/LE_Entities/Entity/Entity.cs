@@ -6,18 +6,19 @@ using LE_Entities.Data;
 
 namespace LE_Entities.Entity
 {
-    class Entity:IEntity
+    public class Entity:IEntity
     {
         private readonly string name;
         private readonly int id;
         private readonly int[] datas;
+        private readonly int groupId;
 
         private int mark;
 
-        public Entity(string name, int id)
+        public Entity(string name,int groupId)
         {
+            this.groupId = groupId;
             this.name = name;
-            this.id = id;
             this.datas = new int[DataManager.Count];
             this.mark = 0;
         }
@@ -25,6 +26,8 @@ namespace LE_Entities.Entity
         public string Name => name;
 
         public int Id => id;
+
+        public int GroupId => groupId;
 
         public T GetData<T>() where T : IData
         {

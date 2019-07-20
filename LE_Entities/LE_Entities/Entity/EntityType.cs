@@ -32,11 +32,14 @@ namespace LE_Entities.Entity
             this.groupActions = groupActions;
             actionCount = groupActions.Length;
         }
-        public void Execute(int id)
+
+        public abstract void Init(Entity entity);
+
+        public void Execute(Entity entity,int id)
         {
             for (int i = 0; i < actionCount; i++)
             {
-                groupActions[i].Execute(id);
+                groupActions[i].Execute(entity,id);
             }
         }
 

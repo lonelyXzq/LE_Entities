@@ -39,7 +39,8 @@ namespace LE_Entities.Entity
         {
             foreach (var data in datas)
             {
-                entityType.Execute(data);
+                EntityManager.ExecuteEntity(data);
+                //entityType.Execute(data);
                 //EntityManager.DataChain.
             }
         }

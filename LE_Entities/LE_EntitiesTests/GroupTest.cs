@@ -22,13 +22,15 @@ namespace LE_EntitiesTests
             bitArray.Set(0, true);
             //Console.WriteLine(bitArray.);
             DataManager.Init();
-            Entity entity = new Entity("123", 1);
-            EntityManager.DataChain.Add(entity);
+            //Entity entity = new Entity("123");
+            //EntityManager.DataChain.Add(entity);
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
             ActionManager.Init();
-            GroupManager.GetEntityType(0).Execute(1);
-            Console.WriteLine();
-            GroupManager.GetEntityType(1).Execute(1);
+            EntityManager.CreateEntity(0, "123");
+            EntityManager.ExecuteEntity(1);
+            //GroupManager.GetEntityType(0).Execute(1);
+            //Console.WriteLine();
+            //GroupManager.GetEntityType(1).Execute(1);
             //LEAction lEAction = new LEAction();
             //Execute<A1, B1> action = lEAction.Execute;
         }
@@ -42,12 +44,23 @@ namespace LE_EntitiesTests
     {
         public A1 a1;
         public B1 b1;
+
+        public override void Init(Entity entity)
+        {
+            entity.AddData(new A1());
+            entity.AddData(new B1());
+        }
     }
     public class GroupB : EntityType
     {
         public A1 a1;
         public B1 b1;
         public C1 c1;
+
+        public override void Init(Entity entity)
+        {
+            throw new NotImplementedException();
+        }
     }
     public class A1 : IData
     {

@@ -11,7 +11,7 @@ namespace LE_Entities.Entity
     public interface ISystemAction : IObject
     {
         BitArray DataInfo { get; }
-        void Execute(int id);
+        void Execute(Entity entity,int id);
     }
 
     abstract class BaseSystemAction : ISystemAction
@@ -53,13 +53,13 @@ namespace LE_Entities.Entity
             //Console.WriteLine();
         }
 
-        public abstract void Execute(int id);
+        public abstract void Execute(Entity entity, int id);
     }
     class SystemAction : BaseSystemAction
     {
         private Execute actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
             actions?.Invoke(id);
         }
@@ -74,9 +74,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>());
         }
 
@@ -91,9 +90,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>());
         }
 
@@ -108,9 +106,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>());
         }
 
@@ -125,9 +122,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>(), entity.GetData<T4>());
         }
 
@@ -142,9 +138,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>());
@@ -161,9 +156,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>());
@@ -179,9 +173,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6, T7> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
@@ -199,9 +192,8 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
 
-        public override void Execute(int id)
+        public override void Execute(Entity entity, int id)
         {
-            Entity entity = EntityManager.DataChain.GetData(id);
             actions?.Invoke(
                 id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
                 , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
