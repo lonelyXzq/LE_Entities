@@ -43,6 +43,14 @@ namespace LE_Entities.Entity
             }
         }
 
+        public void Execute(EntityBlock entityBlock)
+        {
+            for (int i = 0; i < actionCount; i++)
+            {
+                groupActions[i].Execute(entityBlock);
+            }
+        }
+
         public string Name => name;
 
         public int Id => id;

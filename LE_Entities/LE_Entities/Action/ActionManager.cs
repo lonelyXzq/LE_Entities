@@ -34,6 +34,10 @@ namespace LE_Entities.Action
             }
             for (int i = 0; i < groupActions.Length; i++)
             {
+                //for (int j = 0; j < groupActions[i].Count; j++)
+                //{
+                //    Console.WriteLine(groupActions[i][j].Id);
+                //}
                 GroupManager.GetEntityType(i).SetAction(groupActions[i].ToArray());
             }
             //Console.WriteLine((DateTime.Now - t0).TotalMilliseconds);
@@ -42,6 +46,32 @@ namespace LE_Entities.Action
         public static void Init()
         {
 
+        }
+
+        //private static string ToString(BitArray bitArray)
+        //{
+        //    string ts = string.Empty;
+        //    for (int k = 0; k < bitArray.Length; k++)
+        //    {
+        //        ts += string.Format("[{0}]", bitArray[k]);
+        //    }
+        //    return ts;
+        //}
+
+        public static bool Contain(this BitArray b1,BitArray b2)
+        {
+            if (b1.Length != b2.Length)
+            {
+                return false;
+            }
+            for (int i = 0; i < b1.Length; i++)
+            {
+                if (b1[i]==false&&b2[i]==true)
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         private static void Add(Type type)
@@ -56,19 +86,31 @@ namespace LE_Entities.Action
             {
                 for (int i = 0; i < groupActions.Length; i++)
                 {
-                    bool mark = true;
-                    var t = GroupManager.GetEntityType(i).DataInfo.And(systemAction.DataInfo).Xor(systemAction.DataInfo);
-                    for (int j = 0; j < t.Length; j++)
-                    {
-                        if (t[i])
-                        {
-                            mark = false;
-                        }
-                    }
-                    if (mark)
+                    //bool mark = true;
+                    //var t = (BitArray)GroupManager.GetEntityType(i).DataInfo.Clone();
+                    //LE_Log.Log.Debug("EntityInfo", ToString(t));
+                    //LE_Log.Log.Debug("ActionInfo", ToString(systemAction.DataInfo));
+                    //var t2 = t.Or(systemAction.DataInfo);
+                    //LE_Log.Log.Debug("T2Info", ToString(t2));
+                    if (GroupManager.GetEntityType(i).DataInfo.Contain(systemAction.DataInfo))
                     {
                         groupActions[i].Add(systemAction);
+                      
+                        //LE_Log.Log.Debug("action register", " {0}:{1}:{2} ", 
+                        //    GroupManager.GetEntityType(i).Name,ToString(GroupManager.GetEntityType(i).DataInfo),systemAction.Name);
+                        //Console.WriteLine(systemAction.Name);
                     }
+                    //for (int j = 0; j < t.Length; j++)
+                    //{
+                    //    if (t[i])
+                    //    {
+                    //        mark = false;
+                    //    }
+                    //}
+                    //if (mark)
+                    //{
+                    //    groupActions[i].Add(systemAction);
+                    //}
                 }
             }
         }

@@ -98,7 +98,7 @@ namespace LE_Entities.EventSystem
                         }
                         else
                         {
-                            //TODO:
+                            LE_Log.Log.Error("Bind fail", "can bind event to a single mode event,id: {0}", id);
                         }
                         break;
                     case EventPoolMode.Multiple:
@@ -111,7 +111,7 @@ namespace LE_Entities.EventSystem
             }
             else
             {
-                //TODO:
+                LE_Log.Log.Error("Bind fail", "can not find event,id: {0}",id);
             }
         }
 

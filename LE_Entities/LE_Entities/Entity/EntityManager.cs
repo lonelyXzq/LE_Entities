@@ -9,19 +9,50 @@ namespace LE_Entities.Entity
 {
     public static class EntityManager
     {
-        private static readonly DataChain<Entity> dataChain=new DataChain<Entity>();
 
-        public static void CreateEntity(int typeid,string name)
+        private static readonly Dictionary<int, EntityGroup> entityGroups = new Dictionary<int, EntityGroup>();
+
+        static EntityManager()
         {
-            Entity entity = new Entity(name,typeid);
-            dataChain.Add(entity);
-            GroupManager.GetEntityType(typeid).Init(entity);
+            DataManager.Init();
+            ActionManager.Init();
+            for (int i = 0; i < GroupManager.TypeCount; i++)
+            {
+                entityGroups.Add(i, new EntityGroup(GroupManager.GetEntityType(i)));
+            }
         }
 
-        public static void ExecuteEntity(int id)
+        public static void Init()
         {
-            Entity entity = dataChain.GetData(id);
-            GroupManager.GetEntityType(entity.GroupId).Execute(entity,id);
+
+        }
+
+        public static int CreateEntity(int typeid, string name)
+        {
+            if (entityGroups.TryGetValue(typeid, out EntityGroup entityGroup))
+            {
+                return entityGroup.AddEntity(name);
+            }
+            return -1;
+        }
+
+
+        public static void RemoveEntity(int typeid, int id)
+        {
+            if (entityGroups.TryGetValue(typeid, out EntityGroup entityGroup))
+            {
+                entityGroup.Remove(id);
+            }
+        }
+
+        public static void Execute()
+        {
+            foreach (var group in entityGroups.Values)
+            {
+                group.OnUpdate();
+            }
+            //Entity entity = dataChain.GetData(id);
+            //GroupManager.GetEntityType(entity.GroupId).Execute(entity,id);
         }
 
         //public static void ExecuteGroup(int id)
@@ -29,6 +60,5 @@ namespace LE_Entities.Entity
         //    GroupManager.GetEntityType(id).;
         //}
 
-        internal static DataChain<Entity> DataChain => dataChain;
     }
 }

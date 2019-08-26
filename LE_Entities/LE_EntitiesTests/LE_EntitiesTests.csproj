@@ -55,6 +55,7 @@
     <Compile Include="SafetyQueueTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SListTests.cs" />
+    <Compile Include="Template\TemplateTests.cs" />
     <Compile Include="TestReflect.cs" />
     <Compile Include="ToolDataTests.cs" />
   </ItemGroup>

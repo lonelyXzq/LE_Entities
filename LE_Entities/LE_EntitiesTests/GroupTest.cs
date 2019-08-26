@@ -18,16 +18,26 @@ namespace LE_EntitiesTests
         [TestMethod]
         public void InitTest()
         {
-            BitArray bitArray = new BitArray(8);
-            bitArray.Set(0, true);
+            //BitArray bitArray = new BitArray(8);
+            //bitArray.Set(0, true);
             //Console.WriteLine(bitArray.);
-            DataManager.Init();
+            //DataManager.Init();
             //Entity entity = new Entity("123");
             //EntityManager.DataChain.Add(entity);
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
-            ActionManager.Init();
-            EntityManager.CreateEntity(0, "123");
-            EntityManager.ExecuteEntity(1);
+            //ActionManager.Init();
+            EntityManager.Init();
+            for (int i = 0; i < 64; i++)
+            {
+                EntityManager.CreateEntity(1, null);
+            }
+            Console.WriteLine(EntityManager.CreateEntity(1, "123"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "12"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
+            EntityManager.RemoveEntity(GroupManager.GetEntityTypeId(typeof(GroupB)), 0);
+            EntityManager.Execute();
             //GroupManager.GetEntityType(0).Execute(1);
             //Console.WriteLine();
             //GroupManager.GetEntityType(1).Execute(1);
@@ -59,7 +69,10 @@ namespace LE_EntitiesTests
 
         public override void Init(Entity entity)
         {
-            throw new NotImplementedException();
+            entity.AddData(new A1());
+            entity.AddData(new B1());
+            entity.AddData(new C1());
+            //throw new NotImplementedException();
         }
     }
     public class A1 : IData
@@ -82,7 +95,7 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, A1 t1, B1 t2)
         {
-            Console.WriteLine("1");
+            Console.WriteLine(id*10+1);
         }
     }
 
@@ -90,7 +103,7 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, A1 t1, B1 t2)
         {
-            Console.WriteLine("2");
+            Console.WriteLine(id * 10 + 2);
         }
     }
 
@@ -98,7 +111,7 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, A1 t1,C1 t2)
         {
-            Console.WriteLine("3");
+            Console.WriteLine(id * 10 + 3);
         }
     }
 }

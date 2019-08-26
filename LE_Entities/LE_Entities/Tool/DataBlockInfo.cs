@@ -8,6 +8,8 @@ namespace LE_Entities.Tool
     {
         public static int BlockSize = 64;
 
+        public static int BlockSizePow = 6;
+
         private readonly int entityBlockId;
 
         private readonly int[] datas;
@@ -17,16 +19,25 @@ namespace LE_Entities.Tool
 
         private readonly int[] marks;
 
+        private int count;
+
+        public bool IsEmpty => count == 0;
+
+        public bool IsFull => count == BlockSize;
+
+        public int Count => count;
+
         public DataBlockInfo(int entityBlockId, int[] datas)
         {
             this.entityBlockId = entityBlockId;
             this.datas = datas;
             this.firtEmpty = 0;
             this.lastPoint = -1;
+            count = 0;
             this.marks = new int[BlockSize];
             for (int i = 0; i < BlockSize; i++)
             {
-                marks[i] = i+1;
+                marks[i] = i + 1;
             }
         }
 
@@ -45,6 +56,7 @@ namespace LE_Entities.Tool
                 int re = firtEmpty;
                 firtEmpty = marks[re];
                 marks[re] = -1;
+                count++;
                 return re;
             }
             return -1;
@@ -56,7 +68,7 @@ namespace LE_Entities.Tool
             {
                 return false;
             }
-            else if(marks[index]==-1)
+            else if (marks[index] == -1)
             {
                 return true;
             }
@@ -78,10 +90,15 @@ namespace LE_Entities.Tool
                     firtEmpty = index;
                 }
                 lastPoint = index;
+                count--;
             }
         }
 
         public int EntityBlockId => entityBlockId;
 
+        /// <summary>
+        /// 各数据块编号
+        /// </summary>
+        public int[] BlockDatas => datas;
     }
 }

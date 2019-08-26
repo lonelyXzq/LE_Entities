@@ -4,14 +4,28 @@ using System.Text;
 
 namespace LE_Entities.Tool
 {
-    class DataBlock<T>
+    public class DataBlock<T>
     {
-        private readonly DataBlockInfo blockInfo;
+        //private readonly DataBlockInfo blockInfo;
         private readonly T[] datas;
+        private int id;
 
         public DataBlock()
         {
             datas = new T[DataBlockInfo.BlockSize];
+        }
+
+        public void SetId(int id)
+        {
+            this.id = id;
+        }
+
+        public T this[int index]
+        {
+            get
+            {
+                return datas[index];
+            }
         }
 
         public T GetData(int i)
@@ -25,5 +39,7 @@ namespace LE_Entities.Tool
         }
 
         public T[] Datas => datas;
+
+        public int Id => id;
     }
 }

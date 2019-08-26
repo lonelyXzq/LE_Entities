@@ -1,31 +1,69 @@
-﻿using System;
+﻿using LE_Entities.Tool;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LE_Entities.Entity
 {
 
 
-    public abstract class EntityGroup : IEntityGroup
+    public class EntityGroup : IEntityGroup
     {
-        private readonly string name;
-        private readonly int id;
-        private readonly HashSet<int> datas;
+        private readonly Dictionary<int,EntityBlock> blocks;
         private readonly EntityType entityType;
+        private readonly Queue<int> unFullBlockIds;
 
-        public EntityGroup(string name, int id, EntityType entityType)
+        public EntityGroup(EntityType entityType)
         {
-            this.name = name;
-            this.id = id;
-            datas = new HashSet<int>();
+            blocks = new Dictionary<int, EntityBlock>();
             this.entityType = entityType;
+            unFullBlockIds = new Queue<int>();
         }
 
-        public string Name => name;
+        public string Name => entityType.Name;
 
-        public int Id => id;
+        public int Id => entityType.Id;
 
         public EntityType EntityType => entityType;
+
+
+        public int AddEntity(string name)
+        {
+            int id;
+            EntityBlock entityBlock;
+            if (unFullBlockIds.Count == 0)
+            {
+                id = EntityBlockManager.AddBlock(entityType);
+                unFullBlockIds.Enqueue(id);
+                entityBlock = EntityBlockManager.GetEntityBlock(id);
+                blocks.Add(id, entityBlock);
+            }
+            else
+            {
+                id = unFullBlockIds.Dequeue();
+                entityBlock = blocks[id];
+                if (entityBlock.Count < DataBlockInfo.BlockSize - 1)
+                {
+                    unFullBlockIds.Enqueue(id);
+                }
+            }
+            return (id << DataBlockInfo.BlockSizePow) + entityBlock.AddEntity(name);
+        }
+
+        public void Remove(int id)
+        {
+            int blockId = id >> DataBlockInfo.BlockSizePow;
+            int tid = id - (blockId << DataBlockInfo.BlockSizePow);
+            if(blocks.TryGetValue(blockId,out EntityBlock entityBlock))
+            {
+                if (entityBlock.IsFull)
+                {
+                    unFullBlockIds.Enqueue(blockId);
+                }
+                entityBlock.RemoveEntity(tid);
+            }
+        }
 
         public virtual void OnInit()
         {
@@ -37,9 +75,12 @@ namespace LE_Entities.Entity
 
         public virtual void OnUpdate()
         {
-            foreach (var data in datas)
+            foreach (var data in blocks.Values)
             {
-                EntityManager.ExecuteEntity(data);
+                //TODO:group update
+                //data.Execute();
+                Task.Run(() => data.Execute());
+                //EntityManager.ExecuteEntity(data);
                 //entityType.Execute(data);
                 //EntityManager.DataChain.
             }
@@ -47,6 +88,10 @@ namespace LE_Entities.Entity
 
         public virtual void OnEnd()
         {
+            foreach (var data in blocks.Values)
+            {
+                data.Release();
+            }
         }
 
         public virtual void OnDestory()

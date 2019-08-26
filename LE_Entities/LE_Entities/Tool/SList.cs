@@ -57,6 +57,28 @@ namespace LE_Entities.Tool
             return re;
         }
 
+        public int AddId()
+        {
+            int re;
+            if (addPoint < 0)
+            {
+                datas.Add(new ListData(-1, default));
+                re = count;
+                count++;
+                maxLength++;
+            }
+            else
+            {
+                re = addPoint;
+                ListData listData = datas[addPoint];
+                listData.Data = default;
+                addPoint = listData.Id;
+                listData.Id = -1;
+                count++;
+            }
+            return re;
+        }
+
         public bool Check(int index)
         {
             if (index < 0 || index >= datas.Count)

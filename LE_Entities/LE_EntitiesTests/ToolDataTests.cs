@@ -32,6 +32,33 @@ namespace LE_EntitiesTests
         }
 
         [TestMethod]
+        public void EmptyTest()
+        {
+            DataBlockInfo dataBlockInfo = new DataBlockInfo(0, null);
+            for (int i = 0; i < 10; i++)
+            {
+                Console.WriteLine(dataBlockInfo.AddData());
+            }
+            dataBlockInfo.RemoveData(9);
+            dataBlockInfo.RemoveData(7);
+            dataBlockInfo.RemoveData(8);
+            dataBlockInfo.RemoveData(0);
+            dataBlockInfo.RemoveData(5);
+            dataBlockInfo.RemoveData(6);
+            dataBlockInfo.RemoveData(4);
+            dataBlockInfo.RemoveData(1);
+            dataBlockInfo.RemoveData(2);
+            dataBlockInfo.RemoveData(3);
+            //Console.WriteLine(dataBlockInfo.IsEmpty);
+            Assert.AreEqual(dataBlockInfo.IsEmpty, true);
+
+            for (int i = 0; i < 15; i++)
+            {
+                Console.WriteLine(dataBlockInfo.AddData());
+            }
+        }
+
+        [TestMethod]
         public void BlockTest()
         {
             DataBlockInfo dataBlockInfo = new DataBlockInfo(0, null);
