@@ -4,18 +4,14 @@ using System.Text;
 
 namespace LE_Entities.Template
 {
-    public abstract class BaseTD
+    public abstract class BaseTD : ITemplate
     {
-        private readonly int id;
+        protected readonly int id;
 
         public int Id => id;
 
         public abstract void Init();
 
-        protected void SetData<T>(T data) where T : struct, ITemplate
-        {
-            //TODO: Set template Data;
-            //TDManager<T>
-        }
+
     }
 }

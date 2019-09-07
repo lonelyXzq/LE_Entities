@@ -45,6 +45,7 @@ namespace LE_Entities.Action
             Type dataTyep = typeof(DataInfo<>);
             var eType = (BitArray)typeof(EntityType).GetField("dataInfo",BindingFlags.NonPublic|BindingFlags.Instance)
                     .GetValue(entityType);
+            eType.Set(DataInfo<EntityData>.DataId, true);
             for (int i = 0; i < infos.Length; i++)
             {
                 Type t = infos[i].FieldType;

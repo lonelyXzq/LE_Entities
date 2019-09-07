@@ -9,47 +9,31 @@ namespace LE_Entities.Entity
 {
     public class Entity:IEntity
     {
-        private readonly string name;
-        private readonly int id;
-        private readonly EntityBlock entityBlock;
+        private readonly EntityData entityData;
 
-        public Entity(string name,int id)
+        internal Entity(EntityData entityData)
         {
-            this.name = name;
-            this.id = id;
-            entityBlock = EntityBlockManager.
-                GetEntityBlock(id >> DataBlockInfo.BlockSizePow);
+            this.entityData = entityData;
+            AddData(entityData);
         }
 
-        public string Name => name;
+        internal Entity(int id,EntityBlock entityBlock)
+        {
+            entityData = entityBlock.GetData<EntityData>(id & (DataBlockInfo.BlockSize - 1));
+        }
 
-        public int Id => id;
+        public string Name => entityData.Name;
+
+        public int Id => entityData.Id;
 
         public T GetData<T>() where T : IData
         {
-            return entityBlock.GetData<T>(id&(DataBlockInfo.BlockSize-1));
+            return entityData.EntityBlock.GetData<T>(entityData.LocalId);
         }
-
-        //public bool TryGetData<T>(out T data) where T : IData
-        //{
-        //    data = default;
-        //    return false;
-        //    //if(Interlocked.CompareExchange(ref mark, 1, 0) == 0)
-        //    //{
-        //    //    data = GetData<T>();
-        //    //    mark = 0;
-        //    //    return true;
-        //    //}
-        //    //else
-        //    //{
-        //    //    data = default;
-        //    //    return false;
-        //    //}
-        //}
 
         public bool AddData<T>(T data) where T : IData
         {
-            entityBlock.AddData(id & (DataBlockInfo.BlockSize - 1),data);
+            entityData.EntityBlock.AddData(entityData.LocalId,data);
             return true;
             //if (datas[DataInfo<T>.DataId] > 0)
             //{

@@ -22,12 +22,12 @@ namespace LE_Entities.Entity
             LE_Log.Log.Info("TypeRegister", "TypeId: {0} TypeName: {1}", id, name);
         }
 
-        public void SetName(string name)
+        internal void SetName(string name)
         {
             this.name = name;
         }
 
-        public void SetAction(ISystemAction[] groupActions)
+        internal void SetAction(ISystemAction[] groupActions)
         {
             this.groupActions = groupActions;
             actionCount = groupActions.Length;
@@ -35,15 +35,8 @@ namespace LE_Entities.Entity
 
         public abstract void Init(Entity entity);
 
-        public void Execute(Entity entity,int id)
-        {
-            for (int i = 0; i < actionCount; i++)
-            {
-                groupActions[i].Execute(entity,id);
-            }
-        }
 
-        public void Execute(EntityBlock entityBlock)
+        internal void Execute(EntityBlock entityBlock)
         {
             for (int i = 0; i < actionCount; i++)
             {

@@ -11,7 +11,7 @@ namespace LE_Entities.Data
         public static int Count;
         private static IDataBlockManager[] dataBlockManagers;
 
-        public static IDataBlockManager[] DataBlockManagers => dataBlockManagers;
+        internal static IDataBlockManager[] DataBlockManagers => dataBlockManagers;
 
         public static void Init()
         {
@@ -29,7 +29,7 @@ namespace LE_Entities.Data
             }
         }
 
-        public static void AddDataType(int id, IDataBlockManager dataBlockManager)
+        internal static void AddDataType(int id, IDataBlockManager dataBlockManager)
         {
             dataBlockManagers[id] = dataBlockManager;
         }

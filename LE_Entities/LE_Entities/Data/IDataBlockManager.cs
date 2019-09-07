@@ -4,7 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Data
 {
-    public interface IDataBlockManager
+    interface IDataBlockManager
     {
         bool CheckBlock(int id);
 

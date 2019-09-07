@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    public class EntityBlock
+     class EntityBlock
     {
         private readonly DataBlockInfo dataBlockInfo;
         private readonly int id;
@@ -50,7 +50,7 @@ namespace LE_Entities.Entity
             {
                 return id;
             }
-            Entity entity = new Entity(name, id);
+            Entity entity = new Entity(new EntityData(name, id, this));
             entityType.Init(entity);
             return id;
         }

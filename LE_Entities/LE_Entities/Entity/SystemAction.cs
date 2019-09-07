@@ -9,10 +9,9 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    public interface ISystemAction : IObject
+    interface ISystemAction : IObject
     {
         BitArray DataInfo { get; }
-        void Execute(Entity entity, int id);
         void Execute(EntityBlock entityBlock);
     }
 
@@ -55,17 +54,11 @@ namespace LE_Entities.Entity
             //Console.WriteLine();
         }
 
-        public abstract void Execute(Entity entity, int id);
         public abstract void Execute(EntityBlock entityBlock);
     }
     class SystemAction : BaseSystemAction
     {
         private Execute actions;
-
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(id);
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -89,11 +82,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(id, entity.GetData<T1>());
-        }
-
         public void SetAction(IDataAction<T1> dataAction)
         {
             actions = dataAction.Execute;
@@ -107,7 +95,7 @@ namespace LE_Entities.Entity
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, d1.GetData(i));
+                    actions?.Invoke(bid + i, ref d1.Datas[i]);
                 }
             }
         }
@@ -118,10 +106,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -134,7 +118,7 @@ namespace LE_Entities.Entity
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, d1.GetData(i), d2.GetData(i));
+                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i]);
                 }
             }
         }
@@ -150,10 +134,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -165,7 +145,7 @@ namespace LE_Entities.Entity
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, d1.GetData(i), d2.GetData(i), d3.GetData(i));
+                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i]);
                 }
             }
         }
@@ -181,11 +161,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>(), entity.GetData<T4>());
-        }
-
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
@@ -197,7 +172,7 @@ namespace LE_Entities.Entity
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, d1.GetData(i), d2.GetData(i), d3.GetData(i), d4.GetData(i));
+                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i]);
                 }
             }
         }
@@ -213,12 +188,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(
-                id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
-                , entity.GetData<T4>(), entity.GetData<T5>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -233,8 +202,8 @@ namespace LE_Entities.Entity
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        d1.GetData(i), d2.GetData(i), d3.GetData(i), d4.GetData(i),
-                        d5.GetData(i));
+                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
+                        ref d5.Datas[i]);
                 }
             }
         }
@@ -250,12 +219,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(
-                id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
-                , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -271,8 +234,8 @@ namespace LE_Entities.Entity
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        d1.GetData(i), d2.GetData(i), d3.GetData(i), d4.GetData(i),
-                        d5.GetData(i), d6.GetData(i));
+                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
+                        ref d5.Datas[i], ref d6.Datas[i]);
                 }
             }
         }
@@ -288,13 +251,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6, T7> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(
-                id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
-                , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
-                , entity.GetData<T7>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -311,8 +267,8 @@ namespace LE_Entities.Entity
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        d1.GetData(i), d2.GetData(i), d3.GetData(i), d4.GetData(i),
-                        d5.GetData(i), d6.GetData(i), d7.GetData(i));
+                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
+                        ref d5.Datas[i], ref d6.Datas[i], ref d7.Datas[i]);
                 }
             }
         }
@@ -328,13 +284,6 @@ namespace LE_Entities.Entity
     {
         private Execute<T1, T2, T3, T4, T5, T6, T7, T8> actions;
 
-        public override void Execute(Entity entity, int id)
-        {
-            actions?.Invoke(
-                id, entity.GetData<T1>(), entity.GetData<T2>(), entity.GetData<T3>()
-                , entity.GetData<T4>(), entity.GetData<T5>(), entity.GetData<T6>()
-                , entity.GetData<T7>(), entity.GetData<T8>());
-        }
 
         public override void Execute(EntityBlock entityBlock)
         {
@@ -352,8 +301,8 @@ namespace LE_Entities.Entity
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        d1.GetData(i), d2.GetData(i), d3.GetData(i), d4.GetData(i),
-                        d5.GetData(i), d6.GetData(i), d7.GetData(i), d8.GetData(i));
+                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
+                        ref d5.Datas[i], ref d6.Datas[i], ref d7.Datas[i], ref d8.Datas[i]);
                 }
             }
         }

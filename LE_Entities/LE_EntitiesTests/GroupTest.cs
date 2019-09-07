@@ -27,17 +27,20 @@ namespace LE_EntitiesTests
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
             //ActionManager.Init();
             EntityManager.Init();
-            for (int i = 0; i < 64; i++)
-            {
-                EntityManager.CreateEntity(1, null);
-            }
-            Console.WriteLine(EntityManager.CreateEntity(1, "123"));
+            //for (int i = 0; i < 64; i++)
+            //{
+            //    EntityManager.CreateEntity(1, null);
+            //}
+            Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
             Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
             EntityManager.RemoveEntity(GroupManager.GetEntityTypeId(typeof(GroupB)), 0);
             EntityManager.Execute();
+            Entity entity = EntityManager.GetEntity(0);
+            Console.WriteLine("----------");
+            Console.WriteLine(entity.Name);
             //GroupManager.GetEntityType(0).Execute(1);
             //Console.WriteLine();
             //GroupManager.GetEntityType(1).Execute(1);
@@ -93,7 +96,7 @@ namespace LE_EntitiesTests
     [EntityAction(typeof(GroupA))]
     public class GroupAction : IDataAction<A1, B1>
     {
-        public void Execute(int id, A1 t1, B1 t2)
+        public void Execute(int id, ref A1 t1,ref B1 t2)
         {
             Console.WriteLine(id*10+1);
         }
@@ -101,7 +104,7 @@ namespace LE_EntitiesTests
 
     public class LEAction : IDataAction<A1, B1>
     {
-        public void Execute(int id, A1 t1, B1 t2)
+        public void Execute(int id,ref A1 t1,ref B1 t2)
         {
             Console.WriteLine(id * 10 + 2);
         }
@@ -109,7 +112,7 @@ namespace LE_EntitiesTests
 
     public class LE2 : IDataAction<A1,C1>
     {
-        public void Execute(int id, A1 t1,C1 t2)
+        public void Execute(int id,ref A1 t1,ref C1 t2)
         {
             Console.WriteLine(id * 10 + 3);
         }

@@ -36,6 +36,13 @@ namespace LE_Entities.Entity
             return -1;
         }
 
+        public static Entity GetEntity(int id)
+        {
+            EntityBlock entityBlock = EntityBlockManager.GetEntityBlock(id >> DataBlockInfo.BlockSizePow);
+            return new Entity(id,entityBlock);
+
+        }
+
 
         public static void RemoveEntity(int typeid, int id)
         {
@@ -51,8 +58,7 @@ namespace LE_Entities.Entity
             {
                 group.OnUpdate();
             }
-            //Entity entity = dataChain.GetData(id);
-            //GroupManager.GetEntityType(entity.GroupId).Execute(entity,id);
+ 
         }
 
         //public static void ExecuteGroup(int id)

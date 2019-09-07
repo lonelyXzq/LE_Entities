@@ -13,6 +13,6 @@ namespace LE_Entities.Entity
 
         T GetData<T>() where T : IData;
 
-        bool TryGetData<T>(out T data) where T : IData;
+        //bool TryGetData<T>(out T data) where T : IData;
     }
 }

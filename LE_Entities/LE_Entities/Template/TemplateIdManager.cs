@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace LE_Entities.Template
 {
-    static class TemplateIdManager
+    public static class TemplateIdManager
     {
         private static readonly Dictionary<string, long> ids;
         private static readonly Dictionary<string, int> bases;
