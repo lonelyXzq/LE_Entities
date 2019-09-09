@@ -7,7 +7,7 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-     class EntityBlock
+    class EntityBlock
     {
         private readonly DataBlockInfo dataBlockInfo;
         private readonly int id;
@@ -45,7 +45,7 @@ namespace LE_Entities.Entity
 
         public int AddEntity(string name)
         {
-            int id= dataBlockInfo.AddData();
+            int id = dataBlockInfo.AddData();
             if (id == -1)
             {
                 return id;
@@ -102,7 +102,7 @@ namespace LE_Entities.Entity
             int blockId = CheckBlockId<T>();
             if (blockId == -1)
             {
-                LE_Log.Log.Error("Data error", "dataType: {0} is not exists",typeof(T));
+                LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
                 return default;
             }
             return DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id];

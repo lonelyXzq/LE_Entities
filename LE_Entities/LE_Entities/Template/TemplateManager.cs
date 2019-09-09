@@ -20,18 +20,18 @@ namespace LE_Entities.Template
             {
 
                 datas[i] = LEType.CreateInstance<T>(types[i]);
-                int id=IdManager.IdDeliverer<T>.GetNextId();
-                var _id = types[i].GetField("id", BindingFlags.NonPublic |BindingFlags.Instance| BindingFlags.FlattenHierarchy);
+                int id = IdManager.IdDeliverer<T>.GetNextId();
+                var _id = types[i].GetField("id", BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
                 if (_id == null)
                 {
                     //TODO: Exception
-                    LE_Log.Log.Exception(new Exception() ,"Template register fail","template type:{0}",types[i].FullName);
+                    LE_Log.Log.Exception(new Exception(), "Template register fail", "template type:{0}", types[i].FullName);
                 }
                 _id.SetValue(datas[i], id);
-                Console.WriteLine("{0}:{1}",types[i].Name,datas[i].Id);
+                Console.WriteLine("{0}:{1}", types[i].Name, datas[i].Id);
             }
         }
-        
+
         public static void Init()
         {
 

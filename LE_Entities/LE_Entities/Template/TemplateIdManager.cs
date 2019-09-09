@@ -56,7 +56,7 @@ namespace LE_Entities.Template
 
         public static int GetLocalId<Ac>()
         {
-            return (int)(GetId<Ac>());
+            return (int)GetId<Ac>();
         }
     }
 }

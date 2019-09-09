@@ -10,7 +10,7 @@ using System.Text;
 
 namespace LE_Entities.Action
 {
-    static class GroupManager
+    static class EntityTypeManager
     {
         private static readonly List<EntityType> entityTypes = new List<EntityType>();
 
@@ -18,17 +18,15 @@ namespace LE_Entities.Action
 
         public static readonly int TypeCount;
 
-        static GroupManager()
+        static EntityTypeManager()
         {
             Type bt = typeof(EntityType);
-            //DateTime t0 = DateTime.Now;
             var types = LEType.GetTypes(t => t.BaseType == bt);
             TypeCount = types.Length;
             for (int i = 0; i < TypeCount; i++)
             {
                 Add(types[i], i);
             }
-            //Console.WriteLine("Time:" + (DateTime.Now - t0).TotalMilliseconds);
         }
 
         public static void Init()
@@ -56,10 +54,6 @@ namespace LE_Entities.Action
                     eType.Set(index, true);
                 }
             }
-            //for (int i = 0; i < entityType.DataInfo.Length; i++)
-            //{
-            //    Console.WriteLine(entityType.DataInfo[i]);
-            //}
         }
 
         public static EntityType GetEntityType(int id)

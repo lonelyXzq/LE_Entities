@@ -6,9 +6,10 @@ namespace LE_Entities.Tool
 {
     class DataBlockInfo
     {
-        public static int BlockSize = 64;
-
         public static int BlockSizePow = 6;
+
+        public static int BlockSize = 1 << BlockSizePow;
+
 
         private readonly int entityBlockId;
 
@@ -100,5 +101,7 @@ namespace LE_Entities.Tool
         /// 各数据块编号
         /// </summary>
         public int[] BlockDatas => datas;
+
+        public int[] Marks => marks;
     }
 }

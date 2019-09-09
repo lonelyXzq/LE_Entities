@@ -46,7 +46,7 @@ namespace LE_EntitiesTests
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
-            EntityManager.RemoveEntity(GroupManager.GetEntityTypeId(typeof(GroupB)), 0);
+            EntityManager.RemoveEntity(EntityTypeManager.GetEntityTypeId(typeof(GroupB)), 0);
             EntityManager.Execute();
             Thread.Sleep(100);
             EntityManager.Execute();
@@ -142,7 +142,7 @@ namespace LE_EntitiesTests
         }
     }
 
-    [EntityActionCycle(0)]
+    [EntityActionCycle(2)]
     public class LE2 : IDataAction<A1,C1,D1>
     {
         public void Execute(int id,ref A1 t1,ref C1 t2,ref D1 t3)

@@ -23,7 +23,6 @@ namespace LE_Entities.Data
         {
             var t = new DataBlock<T>();
             int id = list.Add(t);
-            t.SetId(id);
             return id;
         }
 

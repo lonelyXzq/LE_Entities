@@ -16,7 +16,7 @@ namespace LE_Entities.Data
 
         public static void Init()
         {
-            DataManager.AddDataType(dataId, dataBlockManager);
+            //DataManager.AddDataType(dataId, dataBlockManager);
         }
 
     }

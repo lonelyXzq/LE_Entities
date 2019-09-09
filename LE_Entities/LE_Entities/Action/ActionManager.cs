@@ -13,11 +13,13 @@ namespace LE_Entities.Action
     {
 
         private static readonly List<ISystemAction> systemActions = new List<ISystemAction>();
-        private static readonly List<ISystemAction>[] groupActions;
+
+        internal static List<ISystemAction> SystemActions => systemActions;
+
         static ActionManager()
         {
-            GroupManager.Init();
-            groupActions = new List<ISystemAction>[GroupManager.TypeCount];
+            EntityTypeManager.Init();
+            List<ISystemAction>[] groupActions = new List<ISystemAction>[EntityTypeManager.TypeCount];
             for (int i = 0; i < groupActions.Length; i++)
             {
                 groupActions[i] = new List<ISystemAction>();
@@ -29,7 +31,7 @@ namespace LE_Entities.Action
                 if (type.IsClass && !type.IsAbstract)
                 {
                     //Console.WriteLine(type.FullName);
-                    Add(type);
+                    Add(type, groupActions);
                 }
             }
             for (int i = 0; i < groupActions.Length; i++)
@@ -38,7 +40,7 @@ namespace LE_Entities.Action
                 //{
                 //    Console.WriteLine(groupActions[i][j].Id);
                 //}
-                GroupManager.GetEntityType(i).SetAction(groupActions[i].ToArray());
+                EntityTypeManager.GetEntityType(i).SetAction(groupActions[i].ToArray());
             }
             //Console.WriteLine((DateTime.Now - t0).TotalMilliseconds);
         }
@@ -48,17 +50,8 @@ namespace LE_Entities.Action
 
         }
 
-        //private static string ToString(BitArray bitArray)
-        //{
-        //    string ts = string.Empty;
-        //    for (int k = 0; k < bitArray.Length; k++)
-        //    {
-        //        ts += string.Format("[{0}]", bitArray[k]);
-        //    }
-        //    return ts;
-        //}
 
-        public static bool Contain(this BitArray b1,BitArray b2)
+        public static bool Contain(this BitArray b1, BitArray b2)
         {
             if (b1.Length != b2.Length)
             {
@@ -66,7 +59,7 @@ namespace LE_Entities.Action
             }
             for (int i = 0; i < b1.Length; i++)
             {
-                if (b1[i]==false&&b2[i]==true)
+                if (b1[i] == false && b2[i] == true)
                 {
                     return false;
                 }
@@ -74,47 +67,23 @@ namespace LE_Entities.Action
             return true;
         }
 
-        private static void Add(Type type)
+        private static void Add(Type type, List<ISystemAction>[] groupActions)
         {
             ISystemAction systemAction = GetSystemAction(type);
             LE_Log.Log.Info("ActionRegister", "ActionId: {0}  ActionName: {1}", systemAction.Id, systemAction.Name);
-            if((Attribute.GetCustomAttribute(type,typeof(EntityActionCycleAttribute)) is EntityActionCycleAttribute actionCycleAttribute))
-            {
-                systemAction.SetCycle(actionCycleAttribute.Cycle);
-            }
+
             if ((Attribute.GetCustomAttribute(type, typeof(EntityActionAttribute)) is EntityActionAttribute actionAttribute))
             {
-                groupActions[GroupManager.GetEntityTypeId(actionAttribute.Type)].Add(systemAction);
+                groupActions[EntityTypeManager.GetEntityTypeId(actionAttribute.Type)].Add(systemAction);
             }
             else
             {
                 for (int i = 0; i < groupActions.Length; i++)
                 {
-                    //bool mark = true;
-                    //var t = (BitArray)GroupManager.GetEntityType(i).DataInfo.Clone();
-                    //LE_Log.Log.Debug("EntityInfo", ToString(t));
-                    //LE_Log.Log.Debug("ActionInfo", ToString(systemAction.DataInfo));
-                    //var t2 = t.Or(systemAction.DataInfo);
-                    //LE_Log.Log.Debug("T2Info", ToString(t2));
-                    if (GroupManager.GetEntityType(i).DataInfo.Contain(systemAction.DataInfo))
+                    if (EntityTypeManager.GetEntityType(i).DataInfo.Contain(systemAction.DataInfo))
                     {
                         groupActions[i].Add(systemAction);
-                      
-                        //LE_Log.Log.Debug("action register", " {0}:{1}:{2} ", 
-                        //    GroupManager.GetEntityType(i).Name,ToString(GroupManager.GetEntityType(i).DataInfo),systemAction.Name);
-                        //Console.WriteLine(systemAction.Name);
                     }
-                    //for (int j = 0; j < t.Length; j++)
-                    //{
-                    //    if (t[i])
-                    //    {
-                    //        mark = false;
-                    //    }
-                    //}
-                    //if (mark)
-                    //{
-                    //    groupActions[i].Add(systemAction);
-                    //}
                 }
             }
         }
@@ -127,6 +96,10 @@ namespace LE_Entities.Action
             string re = name.Replace("IDataAction", "Entity.SystemAction");
             ISystemAction systemAction = LEType.CreateInstance<ISystemAction>(re);
             Type sysType = systemAction.GetType();
+            if ((Attribute.GetCustomAttribute(type, typeof(EntityActionCycleAttribute)) is EntityActionCycleAttribute actionCycleAttribute))
+            {
+                sysType.GetField("cycle", BindingFlags.NonPublic | BindingFlags.Instance).SetValue(systemAction, actionCycleAttribute.Cycle);
+            }
             sysType.GetField("name", BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Instance).SetValue(systemAction, type.FullName);
             MethodInfo methodInfo = sysType.GetMethod("SetAction");
             methodInfo.Invoke(systemAction, new object[] { type.Assembly.CreateInstance(type.FullName) });

@@ -10,15 +10,19 @@ namespace LE_Entities.Entity
     public static class EntityManager
     {
 
-        private static readonly Dictionary<int, EntityGroup> entityGroups = new Dictionary<int, EntityGroup>();
+        private static readonly EntityGroup[] entityGroups;
+
+
 
         static EntityManager()
         {
             DataManager.Init();
             ActionManager.Init();
-            for (int i = 0; i < GroupManager.TypeCount; i++)
+
+            entityGroups = new EntityGroup[EntityTypeManager.TypeCount];
+            for (int i = 0; i < EntityTypeManager.TypeCount; i++)
             {
-                entityGroups.Add(i, new EntityGroup(GroupManager.GetEntityType(i)));
+                entityGroups[i] = new EntityGroup(EntityTypeManager.GetEntityType(i));
             }
         }
 
@@ -29,9 +33,9 @@ namespace LE_Entities.Entity
 
         public static int CreateEntity(int typeid, string name)
         {
-            if (entityGroups.TryGetValue(typeid, out EntityGroup entityGroup))
+            if (typeid >= 0 && typeid < entityGroups.Length)
             {
-                return entityGroup.AddEntity(name);
+                return entityGroups[typeid].AddEntity(name);
             }
             return -1;
         }
@@ -39,26 +43,25 @@ namespace LE_Entities.Entity
         public static Entity GetEntity(int id)
         {
             EntityBlock entityBlock = EntityBlockManager.GetEntityBlock(id >> DataBlockInfo.BlockSizePow);
-            return new Entity(id,entityBlock);
+            return new Entity(id, entityBlock);
 
         }
 
 
         public static void RemoveEntity(int typeid, int id)
         {
-            if (entityGroups.TryGetValue(typeid, out EntityGroup entityGroup))
+            if (typeid >= 0 && typeid < entityGroups.Length)
             {
-                entityGroup.Remove(id);
+                entityGroups[typeid].Remove(id);
             }
         }
 
         public static void Execute()
         {
-            foreach (var group in entityGroups.Values)
+            for (int i = 0; i < entityGroups.Length; i++)
             {
-                group.OnUpdate();
+                entityGroups[i].OnUpdate();
             }
- 
         }
 
         //public static void ExecuteGroup(int id)

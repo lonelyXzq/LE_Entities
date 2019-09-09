@@ -79,7 +79,7 @@ namespace LE_Entities.Entity
             {
                 //TODO:group update
                 //data.Execute();
-                Task.Run(() => data.Execute());
+                Task.Run(() => entityType.Execute(data));
                 //EntityManager.ExecuteEntity(data);
                 //entityType.Execute(data);
                 //EntityManager.DataChain.
@@ -92,6 +92,8 @@ namespace LE_Entities.Entity
             {
                 data.Release();
             }
+            blocks.Clear();
+            unFullBlockIds.Clear();
         }
 
         public virtual void OnDestory()
