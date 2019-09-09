@@ -7,9 +7,9 @@ namespace LE_Entities.Entity
 {
     interface IEntity:IObject
     {
-        bool AddData<T>(T data) where T : IData;
+        //bool AddData<T>(T data) where T : IData;
 
-        void RemoveData<T>() where T : IData;
+        //void RemoveData<T>() where T : IData;
 
         T GetData<T>() where T : IData;
 

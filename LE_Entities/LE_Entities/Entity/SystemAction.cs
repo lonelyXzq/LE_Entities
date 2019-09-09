@@ -12,7 +12,11 @@ namespace LE_Entities.Entity
     interface ISystemAction : IObject
     {
         BitArray DataInfo { get; }
+
+        void Update(EntityBlock entityBlock);
+
         void Execute(EntityBlock entityBlock);
+        void SetCycle(int cycle);
     }
 
     abstract class BaseSystemAction : ISystemAction
@@ -23,11 +27,22 @@ namespace LE_Entities.Entity
 
         private readonly BitArray dataInfo;
 
+        protected int cycle = 0;
+
         public string Name => name;
 
         public int Id => id;
 
         public BitArray DataInfo => dataInfo;
+
+        protected int Cycle => cycle;
+
+        private int nowCycle = 0;
+
+        public void SetCycle(int cycle)
+        {
+            this.cycle = cycle;
+        }
 
         public BaseSystemAction()
         {
@@ -55,6 +70,20 @@ namespace LE_Entities.Entity
         }
 
         public abstract void Execute(EntityBlock entityBlock);
+
+        public void Update(EntityBlock entityBlock)
+        {
+            if (nowCycle == cycle)
+            {
+                Execute(entityBlock);
+                nowCycle = 0;
+            }
+            else
+            {
+                nowCycle++;
+                //Console.WriteLine("debug:{0}",nowCycle);
+            }
+        }
     }
     class SystemAction : BaseSystemAction
     {
@@ -90,12 +119,12 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, ref d1.Datas[i]);
+                    actions?.Invoke(bid + i, ref d1[i]);
                 }
             }
         }
@@ -112,13 +141,13 @@ namespace LE_Entities.Entity
             //Console.WriteLine(entityBlock.BlockId);
             //Console.WriteLine(entityBlock.EntityType.Name);
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i]);
+                    actions?.Invoke(bid + i, ref d1[i], ref d2[i]);
                 }
             }
         }
@@ -138,14 +167,14 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i]);
+                    actions?.Invoke(bid + i, ref d1[i], ref d2[i], ref d3[i]);
                 }
             }
         }
@@ -164,15 +193,15 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
-            DataBlock<T4> d4 = entityBlock.GetDataBlock<T4>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
+            T4[] d4 = entityBlock.GetDataBlock<T4>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
-                    actions?.Invoke(bid + i, ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i]);
+                    actions?.Invoke(bid + i, ref d1[i], ref d2[i], ref d3[i], ref d4[i]);
                 }
             }
         }
@@ -192,18 +221,18 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
-            DataBlock<T4> d4 = entityBlock.GetDataBlock<T4>();
-            DataBlock<T5> d5 = entityBlock.GetDataBlock<T5>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
+            T4[] d4 = entityBlock.GetDataBlock<T4>().Datas;
+            T5[] d5 = entityBlock.GetDataBlock<T5>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
-                        ref d5.Datas[i]);
+                        ref d1[i], ref d2[i], ref d3[i], ref d4[i],
+                        ref d5[i]);
                 }
             }
         }
@@ -223,19 +252,19 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
-            DataBlock<T4> d4 = entityBlock.GetDataBlock<T4>();
-            DataBlock<T5> d5 = entityBlock.GetDataBlock<T5>();
-            DataBlock<T6> d6 = entityBlock.GetDataBlock<T6>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
+            T4[] d4 = entityBlock.GetDataBlock<T4>().Datas;
+            T5[] d5 = entityBlock.GetDataBlock<T5>().Datas;
+            T6[] d6 = entityBlock.GetDataBlock<T6>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
-                        ref d5.Datas[i], ref d6.Datas[i]);
+                        ref d1[i], ref d2[i], ref d3[i], ref d4[i],
+                        ref d5[i], ref d6[i]);
                 }
             }
         }
@@ -255,20 +284,20 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
-            DataBlock<T4> d4 = entityBlock.GetDataBlock<T4>();
-            DataBlock<T5> d5 = entityBlock.GetDataBlock<T5>();
-            DataBlock<T6> d6 = entityBlock.GetDataBlock<T6>();
-            DataBlock<T7> d7 = entityBlock.GetDataBlock<T7>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
+            T4[] d4 = entityBlock.GetDataBlock<T4>().Datas;
+            T5[] d5 = entityBlock.GetDataBlock<T5>().Datas;
+            T6[] d6 = entityBlock.GetDataBlock<T6>().Datas;
+            T7[] d7 = entityBlock.GetDataBlock<T7>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
-                        ref d5.Datas[i], ref d6.Datas[i], ref d7.Datas[i]);
+                        ref d1[i], ref d2[i], ref d3[i], ref d4[i],
+                        ref d5[i], ref d6[i], ref d7[i]);
                 }
             }
         }
@@ -288,21 +317,21 @@ namespace LE_Entities.Entity
         public override void Execute(EntityBlock entityBlock)
         {
             int bid = entityBlock.BlockId << DataBlockInfo.BlockSizePow;
-            DataBlock<T1> d1 = entityBlock.GetDataBlock<T1>();
-            DataBlock<T2> d2 = entityBlock.GetDataBlock<T2>();
-            DataBlock<T3> d3 = entityBlock.GetDataBlock<T3>();
-            DataBlock<T4> d4 = entityBlock.GetDataBlock<T4>();
-            DataBlock<T5> d5 = entityBlock.GetDataBlock<T5>();
-            DataBlock<T6> d6 = entityBlock.GetDataBlock<T6>();
-            DataBlock<T7> d7 = entityBlock.GetDataBlock<T7>();
-            DataBlock<T8> d8 = entityBlock.GetDataBlock<T8>();
+            T1[] d1 = entityBlock.GetDataBlock<T1>().Datas;
+            T2[] d2 = entityBlock.GetDataBlock<T2>().Datas;
+            T3[] d3 = entityBlock.GetDataBlock<T3>().Datas;
+            T4[] d4 = entityBlock.GetDataBlock<T4>().Datas;
+            T5[] d5 = entityBlock.GetDataBlock<T5>().Datas;
+            T6[] d6 = entityBlock.GetDataBlock<T6>().Datas;
+            T7[] d7 = entityBlock.GetDataBlock<T7>().Datas;
+            T8[] d8 = entityBlock.GetDataBlock<T8>().Datas;
             for (int i = 0; i < DataBlockInfo.BlockSize; i++)
             {
                 if (entityBlock.DataBlockInfo.Check(i))
                 {
                     actions?.Invoke(bid + i,
-                        ref d1.Datas[i], ref d2.Datas[i], ref d3.Datas[i], ref d4.Datas[i],
-                        ref d5.Datas[i], ref d6.Datas[i], ref d7.Datas[i], ref d8.Datas[i]);
+                        ref d1[i], ref d2[i], ref d3[i], ref d4[i],
+                        ref d5[i], ref d6[i], ref d7[i], ref d8[i]);
                 }
             }
         }

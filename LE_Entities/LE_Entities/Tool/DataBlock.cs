@@ -6,13 +6,13 @@ namespace LE_Entities.Tool
 {
     public class DataBlock<T>
     {
-        //private readonly DataBlockInfo blockInfo;
-        private readonly T[] datas;
         private int id;
+
+        public T[] Datas;
 
         public DataBlock()
         {
-            datas = new T[DataBlockInfo.BlockSize];
+            Datas = new T[DataBlockInfo.BlockSize];
         }
 
         public void SetId(int id)
@@ -24,21 +24,19 @@ namespace LE_Entities.Tool
         {
             get
             {
-                return datas[index];
+                return Datas[index];
             }
         }
 
         public T GetData(int i)
         {
-            return datas[i];
+            return Datas[i];
         }
 
         public void SetData(int i,T data)
         {
-            datas[i] = data;
+            Datas[i] = data;
         }
-
-        public T[] Datas => datas;
 
         public int Id => id;
     }

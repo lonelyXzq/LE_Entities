@@ -31,7 +31,7 @@ namespace LE_Entities.Entity
             return entityData.EntityBlock.GetData<T>(entityData.LocalId);
         }
 
-        public bool AddData<T>(T data) where T : IData
+        internal bool AddData<T>(T data) where T : IData
         {
             entityData.EntityBlock.AddData(entityData.LocalId,data);
             return true;
@@ -43,7 +43,7 @@ namespace LE_Entities.Entity
             //return true;
         }
 
-        public void RemoveData<T>() where T : IData
+        internal void RemoveData<T>() where T : IData
         {
             //DataInfo<T>.DataChain.RemoveData(datas[DataInfo<T>.DataId]);
             //datas[DataInfo<T>.DataId] = 0;

@@ -40,7 +40,7 @@ namespace LE_Entities.Entity
         {
             for (int i = 0; i < actionCount; i++)
             {
-                groupActions[i].Execute(entityBlock);
+                groupActions[i].Update(entityBlock);
             }
         }
 

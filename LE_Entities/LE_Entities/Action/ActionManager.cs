@@ -78,6 +78,10 @@ namespace LE_Entities.Action
         {
             ISystemAction systemAction = GetSystemAction(type);
             LE_Log.Log.Info("ActionRegister", "ActionId: {0}  ActionName: {1}", systemAction.Id, systemAction.Name);
+            if((Attribute.GetCustomAttribute(type,typeof(EntityActionCycleAttribute)) is EntityActionCycleAttribute actionCycleAttribute))
+            {
+                systemAction.SetCycle(actionCycleAttribute.Cycle);
+            }
             if ((Attribute.GetCustomAttribute(type, typeof(EntityActionAttribute)) is EntityActionAttribute actionAttribute))
             {
                 groupActions[GroupManager.GetEntityTypeId(actionAttribute.Type)].Add(systemAction);
