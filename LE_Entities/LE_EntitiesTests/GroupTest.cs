@@ -46,6 +46,23 @@ namespace LE_EntitiesTests
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
+            
+            //GroupManager.GetEntityType(0).Execute(1);
+            //Console.WriteLine();
+            //GroupManager.GetEntityType(1).Execute(1);
+            //LEAction lEAction = new LEAction();
+            //Execute<A1, B1> action = lEAction.Execute;
+        }
+
+        [TestMethod]
+        public void ExecuteTest()
+        {
+            EntityManager.Init();
+            Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "12"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
             EntityManager.RemoveEntity(EntityTypeManager.GetEntityTypeId(typeof(GroupB)), 0);
             EntityManager.Execute();
             Thread.Sleep(100);
@@ -60,38 +77,30 @@ namespace LE_EntitiesTests
             Console.WriteLine(entity.GetData<D1>().a);
             Assert.AreEqual(entity.GetData<D1>().a, 1);
             Console.WriteLine(entity.Name);
-            
-            //GroupManager.GetEntityType(0).Execute(1);
-            //Console.WriteLine();
-            //GroupManager.GetEntityType(1).Execute(1);
-            //LEAction lEAction = new LEAction();
-            //Execute<A1, B1> action = lEAction.Execute;
         }
-
-
 
 
     }
 
-    public class GroupA : EntityType
+    public class GroupA : IEntityType
     {
         public A1 a1;
         public B1 b1;
 
-        public override void Init(Entity entity)
+        public void Init(Entity entity)
         {
             entity.AddData(new A1());
             entity.AddData(new B1());
         }
     }
-    public class GroupB : EntityType
+    public class GroupB : IEntityType
     {
         public A1 a1;
         public B1 b1;
         public C1 c1;
         public D1 d1;
 
-        public override void Init(Entity entity)
+        public void Init(Entity entity)
         {
             entity.AddData(new A1());
             entity.AddData(new B1());

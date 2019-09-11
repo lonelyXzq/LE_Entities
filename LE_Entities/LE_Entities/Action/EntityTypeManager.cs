@@ -12,52 +12,67 @@ namespace LE_Entities.Action
 {
     static class EntityTypeManager
     {
-        private static readonly List<EntityType> entityTypes = new List<EntityType>();
+        private static EntityType[] entityTypes;
 
         private static readonly Dictionary<string, int> idchanges = new Dictionary<string, int>();
 
-        public static readonly int TypeCount;
+        private static int typeCount;
+
+        public static int TypeCount => typeCount;
+
 
         static EntityTypeManager()
         {
-            Type bt = typeof(EntityType);
-            var types = LEType.GetTypes(t => t.BaseType == bt);
-            TypeCount = types.Length;
-            for (int i = 0; i < TypeCount; i++)
-            {
-                Add(types[i], i);
-            }
+            
         }
 
         public static void Init()
         {
+            if (entityTypes == null)
+            {
+                var types = LEType.GetTypes(t => t.GetInterfaces().Contains(typeof(IEntityType)));
+                Register(types);
+            }
+        }
 
+        internal static void Register(Type[] types)
+        {
+            typeCount = types.Length;
+            entityTypes = new EntityType[TypeCount];
+            for (int i = 0; i < TypeCount; i++)
+            {
+                entityTypes[i] = new EntityType();
+                Add(types[i], i);
+            }
         }
 
         private static void Add(Type type, int id)
         {
-            EntityType entityType = LEType.CreateInstance<EntityType>(type);
-            entityTypes.Add(entityType);
+            IEntityType entityType = LEType.CreateInstance<IEntityType>(type);
+            
             idchanges.Add(type.FullName, id);
             var infos = type.GetFields();
             Type dataTyep = typeof(DataInfo<>);
-            var eType = (BitArray)typeof(EntityType).GetField("dataInfo",BindingFlags.NonPublic|BindingFlags.Instance)
-                    .GetValue(entityType);
+            BitArray eType = entityTypes[id].DataInfo;
             eType.Set(DataInfo<EntityData>.DataId, true);
             for (int i = 0; i < infos.Length; i++)
             {
                 Type t = infos[i].FieldType;
                 if (t.GetInterfaces().Contains(typeof(IData)))
                 {
+                    //Console.WriteLine(t.FullName);
                     int index=(int)dataTyep.MakeGenericType(t).GetField("dataId", BindingFlags.NonPublic | BindingFlags.Static)
                         .GetValue(null);
+                    //Console.WriteLine(index);
                     eType.Set(index, true);
                 }
             }
+            entityTypes[id].SetEntityType(entityType);
         }
 
         public static EntityType GetEntityType(int id)
         {
+            //Range set
             return entityTypes[id];
         }
 

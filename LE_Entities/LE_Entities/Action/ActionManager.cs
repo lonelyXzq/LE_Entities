@@ -18,36 +18,39 @@ namespace LE_Entities.Action
 
         static ActionManager()
         {
-            EntityTypeManager.Init();
+           
+        }
+
+        public static void Init()
+        {
+            if (systemActions.Count == 0)
+            {
+                EntityTypeManager.Init();
+                var types = LEType.GetTypes(t => t.GetInterfaces().Contains(typeof(ILE_Data)));
+                Register(types);
+            }
+        }
+
+        internal static void Register(Type[] types)
+        {
+            
             List<ISystemAction>[] groupActions = new List<ISystemAction>[EntityTypeManager.TypeCount];
             for (int i = 0; i < groupActions.Length; i++)
             {
                 groupActions[i] = new List<ISystemAction>();
             }
-            //DateTime t0 = DateTime.Now;
-            var types = LEType.GetTypes(t => t.GetInterfaces().Contains(typeof(ILE_Data)));
+            
             foreach (var type in types)
             {
                 if (type.IsClass && !type.IsAbstract)
                 {
-                    //Console.WriteLine(type.FullName);
                     Add(type, groupActions);
                 }
             }
             for (int i = 0; i < groupActions.Length; i++)
             {
-                //for (int j = 0; j < groupActions[i].Count; j++)
-                //{
-                //    Console.WriteLine(groupActions[i][j].Id);
-                //}
                 EntityTypeManager.GetEntityType(i).SetAction(groupActions[i].ToArray());
             }
-            //Console.WriteLine((DateTime.Now - t0).TotalMilliseconds);
-        }
-
-        public static void Init()
-        {
-
         }
 
 

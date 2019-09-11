@@ -6,37 +6,43 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    public abstract class EntityType : IEntityType
+    internal class EntityType:IObject
     {
         private string name;
         private readonly int id;
         private ISystemAction[] groupActions;
         private int actionCount;
         private readonly BitArray dataInfo;
+        private IEntityType entityType;
 
-        protected EntityType()
+        public EntityType()
         {
-            this.name = GetType().Name;
+            //this.name = GetType().Name;
             dataInfo = new BitArray(DataManager.Count);
             id = IdManager.IdDeliverer<EntityType>.GetNextId();
+            
+        }
+
+        public void SetEntityType(IEntityType entityType)
+        {
+            this.entityType = entityType;
+            name = entityType.GetType().FullName;
             LE_Log.Log.Info("TypeRegister", "TypeId: {0} TypeName: {1}", id, name);
         }
 
-        internal void SetName(string name)
-        {
-            this.name = name;
-        }
-
-        internal void SetAction(ISystemAction[] groupActions)
+        public void SetAction(ISystemAction[] groupActions)
         {
             this.groupActions = groupActions;
             actionCount = groupActions.Length;
         }
 
-        public abstract void Init(Entity entity);
+        public void Init(Entity entity)
+        {
+            entityType.Init(entity);
+        }
 
 
-        internal void Execute(EntityBlock entityBlock)
+        public void Execute(EntityBlock entityBlock)
         {
             for (int i = 0; i < actionCount; i++)
             {

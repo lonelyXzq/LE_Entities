@@ -8,7 +8,7 @@ namespace LE_Entities.Entity
 {
 
 
-    public class EntityGroup : IEntityGroup
+    internal class EntityGroup : IEntityGroup
     {
         private readonly Dictionary<int,EntityBlock> blocks;
         private readonly EntityType entityType;

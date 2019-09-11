@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LE_Entities
 {
-    public interface ILE_Data
+    public interface ILE_Data:IBaseObject
     {
 
     }

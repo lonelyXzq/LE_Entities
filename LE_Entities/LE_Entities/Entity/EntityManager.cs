@@ -16,8 +16,9 @@ namespace LE_Entities.Entity
 
         static EntityManager()
         {
-            DataManager.Init();
-            ActionManager.Init();
+            //DataManager.Init();
+            //ActionManager.Init();
+            ObjectInitManager.Init();
 
             entityGroups = new EntityGroup[EntityTypeManager.TypeCount];
             for (int i = 0; i < EntityTypeManager.TypeCount; i++)
