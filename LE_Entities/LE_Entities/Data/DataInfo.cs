@@ -10,6 +10,8 @@ namespace LE_Entities.Data
         private static readonly int dataId = IdManager.IdDeliverer<IData>.GetNextId();
         public static int DataId => dataId;
 
+        public static int LocalId;
+
         private static readonly DataBlockManager<T> dataBlockManager = new DataBlockManager<T>();
 
         internal static DataBlockManager<T> DataBlockManager => dataBlockManager;

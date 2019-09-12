@@ -14,7 +14,7 @@ namespace LE_Entities.Action
     {
         private static EntityType[] entityTypes;
 
-        private static readonly Dictionary<string, int> idchanges = new Dictionary<string, int>();
+        //private static readonly Dictionary<string, int> idchanges = new Dictionary<string, int>();
 
         private static int typeCount;
 
@@ -50,7 +50,7 @@ namespace LE_Entities.Action
         {
             IEntityType entityType = LEType.CreateInstance<IEntityType>(type);
             
-            idchanges.Add(type.FullName, id);
+            //idchanges.Add(type.FullName, id);
             var infos = type.GetFields();
             Type dataTyep = typeof(DataInfo<>);
             BitArray eType = entityTypes[id].DataInfo;
@@ -76,13 +76,13 @@ namespace LE_Entities.Action
             return entityTypes[id];
         }
 
-        public static int GetEntityTypeId(Type type)
-        {
-            if (idchanges.TryGetValue(type.FullName, out int id))
-            {
-                return id;
-            }
-            return -1;
-        }
+        //public static int GetEntityTypeId(Type type)
+        //{
+        //    if (idchanges.TryGetValue(type.FullName, out int id))
+        //    {
+        //        return id;
+        //    }
+        //    return -1;
+        //}
     }
 }

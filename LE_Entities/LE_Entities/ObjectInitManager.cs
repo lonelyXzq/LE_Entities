@@ -10,7 +10,25 @@ namespace LE_Entities
 {
     static class ObjectInitManager
     {
-        static ObjectInitManager()
+
+        //public static bool CheckInterface(this Type type)
+        //{
+        //    if (type.GetInterfaces().Contains(typeof(IData)))
+        //    {
+        //        return true;
+        //    }
+        //    if (type.GetInterfaces().Contains(typeof(IEntityType)))
+        //    {
+        //        return true;
+        //    }
+        //    if (type.GetInterfaces().Contains(typeof(ILE_Data)))
+        //    {
+        //        return true;
+        //    }
+        //    return false;
+        //}
+
+        public static void Init()
         {
             DateTime d1 = DateTime.Now;
             Type[] types = LE_Type.LEType.GetTypes(t => t.GetInterfaces().Contains(typeof(IBaseObject)));
@@ -43,15 +61,12 @@ namespace LE_Entities
                     LE_Log.Log.Exception(new Exception(), "Register fail", "unknow type , type name : {0}", types[i].FullName);
                 }
             }
-
+            ObjectIdManager.AddInfos(datas);
+            ObjectIdManager.AddInfos(groups);
+            ObjectIdManager.AddInfos(actions);
             DataManager.Register(datas.ToArray());
             EntityTypeManager.Register(groups.ToArray());
             ActionManager.Register(actions.ToArray());
-        }
-
-        public static void Init()
-        {
-
         }
     }
 }

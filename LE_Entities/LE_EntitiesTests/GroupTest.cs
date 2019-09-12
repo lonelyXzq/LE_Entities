@@ -46,7 +46,7 @@ namespace LE_EntitiesTests
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
-            
+            ObjectIdManager.OutputInfos();
             //GroupManager.GetEntityType(0).Execute(1);
             //Console.WriteLine();
             //GroupManager.GetEntityType(1).Execute(1);
@@ -63,7 +63,7 @@ namespace LE_EntitiesTests
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
-            EntityManager.RemoveEntity(EntityTypeManager.GetEntityTypeId(typeof(GroupB)), 0);
+            EntityManager.RemoveEntity(ObjectIdManager.GetId(typeof(GroupB)), 0);
             EntityManager.Execute();
             Thread.Sleep(100);
             EntityManager.Execute();

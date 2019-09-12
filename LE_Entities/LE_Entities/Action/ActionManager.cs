@@ -12,19 +12,24 @@ namespace LE_Entities.Action
     static class ActionManager
     {
 
-        private static readonly List<ISystemAction> systemActions = new List<ISystemAction>();
+        private static ISystemAction[] systemActions;
 
-        internal static List<ISystemAction> SystemActions => systemActions;
+        private static int actionCount;
+
+        public static int ActionCount => actionCount;
+
+        internal static ISystemAction[] SystemActions => systemActions;
 
         static ActionManager()
         {
-           
+
         }
 
         public static void Init()
         {
-            if (systemActions.Count == 0)
+            if (systemActions == null)
             {
+
                 EntityTypeManager.Init();
                 var types = LEType.GetTypes(t => t.GetInterfaces().Contains(typeof(ILE_Data)));
                 Register(types);
@@ -33,18 +38,19 @@ namespace LE_Entities.Action
 
         internal static void Register(Type[] types)
         {
-            
+            actionCount = types.Length;
+            systemActions = new ISystemAction[actionCount];
             List<ISystemAction>[] groupActions = new List<ISystemAction>[EntityTypeManager.TypeCount];
             for (int i = 0; i < groupActions.Length; i++)
             {
                 groupActions[i] = new List<ISystemAction>();
             }
-            
-            foreach (var type in types)
+
+            for (int i = 0; i < actionCount; i++)
             {
-                if (type.IsClass && !type.IsAbstract)
+                if (types[i].IsClass && !types[i].IsAbstract)
                 {
-                    Add(type, groupActions);
+                    Add(types[i], groupActions, i);
                 }
             }
             for (int i = 0; i < groupActions.Length; i++)
@@ -70,14 +76,14 @@ namespace LE_Entities.Action
             return true;
         }
 
-        private static void Add(Type type, List<ISystemAction>[] groupActions)
+        private static void Add(Type type, List<ISystemAction>[] groupActions, int id)
         {
-            ISystemAction systemAction = GetSystemAction(type);
+            ISystemAction systemAction = GetSystemAction(type, id);
             LE_Log.Log.Info("ActionRegister", "ActionId: {0}  ActionName: {1}", systemAction.Id, systemAction.Name);
 
             if ((Attribute.GetCustomAttribute(type, typeof(EntityActionAttribute)) is EntityActionAttribute actionAttribute))
             {
-                groupActions[EntityTypeManager.GetEntityTypeId(actionAttribute.Type)].Add(systemAction);
+                groupActions[ObjectIdManager.GetId(actionAttribute.Type)].Add(systemAction);
             }
             else
             {
@@ -91,7 +97,7 @@ namespace LE_Entities.Action
             }
         }
 
-        private static ISystemAction GetSystemAction(Type type)
+        private static ISystemAction GetSystemAction(Type type, int id)
         {
             int length = type.GetMethod("Execute").GetParameters().Length - 1;
 
@@ -106,7 +112,7 @@ namespace LE_Entities.Action
             sysType.GetField("name", BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Instance).SetValue(systemAction, type.FullName);
             MethodInfo methodInfo = sysType.GetMethod("SetAction");
             methodInfo.Invoke(systemAction, new object[] { type.Assembly.CreateInstance(type.FullName) });
-            systemActions.Add(systemAction);
+            systemActions[id] = systemAction;
             return systemAction;
         }
     }

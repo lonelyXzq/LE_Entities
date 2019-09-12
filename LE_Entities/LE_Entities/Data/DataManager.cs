@@ -6,6 +6,8 @@ using System.Text;
 
 namespace LE_Entities.Data
 {
+
+
     public static class DataManager
     {
         private static int count;
@@ -21,6 +23,7 @@ namespace LE_Entities.Data
            
         }
 
+
         internal static void Register(Type[] types)
         {
             Type type1 = typeof(DataInfo<>);
@@ -32,6 +35,9 @@ namespace LE_Entities.Data
                 //   .Invoke(null, null);
                 dataBlockManagers[i] = (IDataBlockManager)type1.MakeGenericType(types[i]).GetProperty("DataBlockManager", BindingFlags.Static | BindingFlags.NonPublic)
                     .GetValue(null);
+
+
+
                 LE_Log.Log.Info("DataRegister", "DataId: {0}  DataName: {1}", i, types[i].FullName);
             }
         }
