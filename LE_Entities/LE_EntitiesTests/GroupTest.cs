@@ -2,6 +2,7 @@
 using LE_Entities.Action;
 using LE_Entities.Data;
 using LE_Entities.Entity;
+using LE_Entities.Listener;
 using LE_Entities.Tool;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -29,10 +30,10 @@ namespace LE_EntitiesTests
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
             //ActionManager.Init();
             EntityManager.Init();
-            //for (int i = 0; i < 64; i++)
-            //{
-            //    EntityManager.CreateEntity(1, null);
-            //}
+            for (int i = 0; i < 64; i++)
+            {
+                EntityManager.CreateEntity(1, null);
+            }
             //LE2 e2 = new LE2();
             //DataBlock<D1> dataBlock = new DataBlock<D1>();
             //D1[] d1s = dataBlock.Datas;
@@ -47,11 +48,7 @@ namespace LE_EntitiesTests
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
             ObjectIdManager.OutputInfos();
-            //GroupManager.GetEntityType(0).Execute(1);
-            //Console.WriteLine();
-            //GroupManager.GetEntityType(1).Execute(1);
-            //LEAction lEAction = new LEAction();
-            //Execute<A1, B1> action = lEAction.Execute;
+
         }
 
         [TestMethod]
@@ -79,7 +76,43 @@ namespace LE_EntitiesTests
             Console.WriteLine(entity.Name);
         }
 
+        [TestMethod]
+        public void SetDataTest()
+        {
+            //Console.WriteLine(typeof(IListener<D1>).FullName);
+            EntityManager.Init();
+            Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "12"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
+            Entity entity = EntityManager.GetEntity(0);
+            entity.SetData(new D1(233));
+            entity.SetName("asd");
+            Console.WriteLine(entity.Name);
+            Console.WriteLine(entity.GetData<D1>().a);
+            Assert.AreEqual(entity.GetData<D1>().a, 233);
+            Lis lis = new Lis();
+            ListenerAction<D1> listenerAction = lis.Execute;
+        }
+    }
 
+    [ActiveTime(ActiveChance.OnChange)]
+    public class Lis : IListener<D1>
+    {
+        public void Execute(int id, ref D1 data)
+        {
+            Console.WriteLine("data change");
+        }
+    }
+
+    [ActiveTime(ActiveChance.OnChange)]
+    public class Lis2 : IListener<D1>
+    {
+        public void Execute(int id, ref D1 data)
+        {
+            Console.WriteLine("data2 change");
+        }
     }
 
     public class GroupA : IEntityType
@@ -137,24 +170,24 @@ namespace LE_EntitiesTests
     [EntityAction(typeof(GroupA))]
     public class GroupAction : IDataAction<A1, B1>
     {
-        public void Execute(int id, ref A1 t1,ref B1 t2)
+        public void Execute(int id, ref A1 t1, ref B1 t2)
         {
-            Console.WriteLine(id*10+1);
+            Console.WriteLine(id * 10 + 1);
         }
     }
 
     public class LEAction : IDataAction<A1, B1>
     {
-        public void Execute(int id,ref A1 t1,ref B1 t2)
+        public void Execute(int id, ref A1 t1, ref B1 t2)
         {
             Console.WriteLine(id * 10 + 2);
         }
     }
 
     [EntityActionCycle(2)]
-    public class LE2 : IDataAction<A1,C1,D1>
+    public class LE2 : IDataAction<A1, C1, D1>
     {
-        public void Execute(int id,ref A1 t1,ref C1 t2,ref D1 t3)
+        public void Execute(int id, ref A1 t1, ref C1 t2, ref D1 t3)
         {
             Console.WriteLine("------------------------------");
             //Console.WriteLine(t3.a);

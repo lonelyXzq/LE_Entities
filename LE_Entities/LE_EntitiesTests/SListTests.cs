@@ -56,7 +56,7 @@ namespace LE_EntitiesTests
             list.Remove(7);
             list.Remove(6);
             list.Remove(5);
-            Assert.AreEqual(list.Length, 8);
+            Assert.AreEqual(list.Length, 5);
             Assert.AreEqual(list.Count, 5);
             list.Remove(7);
             list.Remove(4);
@@ -64,7 +64,7 @@ namespace LE_EntitiesTests
             list.Remove(2);
             list.Remove(1);
             list.Remove(0);
-            Assert.AreEqual(list.Length, 8);
+            Assert.AreEqual(list.Length, 0);
             Assert.AreEqual(list.Count, 0);
         }
 

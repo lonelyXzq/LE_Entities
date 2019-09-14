@@ -31,6 +31,18 @@ namespace LE_Entities.Entity
             return entityData.EntityBlock.GetData<T>(entityData.LocalId);
         }
 
+        public void SetData<T>(T data) where T : IData
+        {
+            Listener.ActionListener<T>.Listeners[2]?.Invoke(Id, ref data);
+            entityData.EntityBlock.SetData(entityData.LocalId, data);
+
+        }
+
+        public void SetName(string name)
+        {
+            entityData.Name = name;
+        }
+
         internal bool AddData<T>(T data) where T : IData
         {
             entityData.EntityBlock.AddData(entityData.LocalId,data);

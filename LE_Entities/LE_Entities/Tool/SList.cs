@@ -134,6 +134,13 @@ namespace LE_Entities.Tool
 
         public void Remove(int index)
         {
+            if (index == maxLength - 1)
+            {
+                datas.RemoveAt(index);
+                count--;
+                maxLength--;
+                return;
+            }
             if (Check(index))
             {
                 datas[index].Data = default;

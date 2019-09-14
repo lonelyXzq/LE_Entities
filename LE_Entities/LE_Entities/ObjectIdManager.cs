@@ -8,9 +8,9 @@ namespace LE_Entities
     {
         public static string fileName = "save.id";
 
-        private static Dictionary<string, int> idInfos = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> idInfos = new Dictionary<string, int>();
 
-        private static Dictionary<string, int> localIds = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> localIds = new Dictionary<string, int>();
 
         internal static void AddInfo(Type type, int id)
         {

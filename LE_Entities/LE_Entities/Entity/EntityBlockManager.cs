@@ -27,13 +27,22 @@ namespace LE_Entities.Entity
 
         public static int AddBlock(EntityType entityType)
         {
-            
-            int id= entities.AddId();
+
+            int id = entities.AddId();
             EntityBlock entityBlock = new EntityBlock(id, entityType);
-            
+
             entities[id] = entityBlock;
             return id;
-     
+
+        }
+
+        public static void ReleaseEmpty()
+        {
+            var blocks = entities.FindData((b) => b.IsEmpty);
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                blocks[i].Release();
+            }
         }
 
         public static void ReleaseBlock(int id)
