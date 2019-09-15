@@ -7,20 +7,21 @@ namespace LE_Entities.Listener
     [Flags]
     public enum ActiveChance
     {
-        OnCreate,
-        OnAdd,
-        OnChange,
-        OnRemove,
-        OnDestory
+        OnCreate = 1,
+        OnAdd = 2,
+        OnChange = 4,
+        OnRemove = 8,
+        OnDestory = 16
     }
 
     [AttributeUsage(AttributeTargets.Class, Inherited = false)]
-    public class ActiveTimeAttribute:Attribute
+    public class ActiveTimeAttribute : Attribute
     {
         private readonly ActiveChance activeChance;
 
         public ActiveTimeAttribute(ActiveChance activeChance)
         {
+            //Console.WriteLine(activeChance);
             this.activeChance = activeChance;
         }
 

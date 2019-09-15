@@ -11,5 +11,9 @@ namespace LE_Entities.Data
         int AddBlock();
 
         void RemoveBlock(int blockId);
+
+        void RemoveData(int blockId, int localId);
+
+        void RemoveDatas(int blockId, List<int> localIds);
     }
 }

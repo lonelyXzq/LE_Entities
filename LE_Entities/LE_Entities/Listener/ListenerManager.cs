@@ -37,6 +37,7 @@ namespace LE_Entities.Listener
             bool[] marks = new bool[5];
             if (Attribute.GetCustomAttribute(type, typeof(ActiveTimeAttribute)) is ActiveTimeAttribute activeTime)
             {
+                //Console.WriteLine(activeTime.ActiveChance);
                 marks[0] = activeTime.ActiveChance.HasFlag(ActiveChance.OnCreate);
                 marks[1] = activeTime.ActiveChance.HasFlag(ActiveChance.OnAdd);
                 marks[2] = activeTime.ActiveChance.HasFlag(ActiveChance.OnChange);

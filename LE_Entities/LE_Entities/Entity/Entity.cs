@@ -33,7 +33,7 @@ namespace LE_Entities.Entity
 
         public void SetData<T>(T data) where T : IData
         {
-            Listener.ActionListener<T>.Listeners[2]?.Invoke(Id, ref data);
+            //Listener.ActionListener<T>.Listeners[2]?.Invoke(Id, ref data);
             entityData.EntityBlock.SetData(entityData.LocalId, data);
 
         }
@@ -43,8 +43,9 @@ namespace LE_Entities.Entity
             entityData.Name = name;
         }
 
-        internal bool AddData<T>(T data) where T : IData
+        public bool AddData<T>(T data) where T : IData
         {
+            //Listener.ActionListener<T>.Listeners[0]?.Invoke(Id, ref data);
             entityData.EntityBlock.AddData(entityData.LocalId,data);
             return true;
             //if (datas[DataInfo<T>.DataId] > 0)

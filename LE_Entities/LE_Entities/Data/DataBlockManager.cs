@@ -5,7 +5,7 @@ using System.Text;
 
 namespace LE_Entities.Data
 {
-    class DataBlockManager<T> : IDataBlockManager
+    class DataBlockManager<T> : IDataBlockManager where T : IData
     {
         private readonly SList<DataBlock<T>> list;
 
@@ -38,6 +38,32 @@ namespace LE_Entities.Data
         public void RemoveBlock(int blockId)
         {
             list.Remove(blockId);
+        }
+
+        public void RemoveData(int blockId, int localId)
+        {
+
+            var datas = GetBlock(blockId);
+            if (datas != null)
+            {
+                Listener.ActionListener<T>.Listeners[4]?.Invoke(localId, ref datas.Datas[localId]);
+                datas.Datas[localId] = default;
+            }
+
+        }
+
+        public void RemoveDatas(int blockId, List<int> localIds)
+        {
+            var datas = GetBlock(blockId);
+            if (datas != null)
+            {
+                foreach (var localId in localIds)
+                {
+                    Listener.ActionListener<T>.Listeners[4]?.Invoke(localId, ref datas.Datas[localId]);
+                    datas.Datas[localId] = default;
+                }
+            }
+
         }
     }
 }

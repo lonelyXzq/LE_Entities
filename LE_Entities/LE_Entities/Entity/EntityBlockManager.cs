@@ -53,6 +53,7 @@ namespace LE_Entities.Entity
                 return;
             }
             entities[id].Release();
+            entities.Remove(id);
         }
     }
 }

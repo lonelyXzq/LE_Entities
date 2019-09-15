@@ -58,15 +58,33 @@ namespace LE_Entities.Entity
         public void RemoveEntity(int id)
         {
             dataBlockInfo.RemoveData(id);
-        }
-
-        public void Release()
-        {
             int[] datas = dataBlockInfo.BlockDatas;
             for (int i = 0; i < datas.Length; i++)
             {
                 if (datas[i] != -1)
                 {
+                    DataManager.DataBlockManagers[i].RemoveData(datas[i], id);
+                }
+            }
+        }
+
+        public void Release()
+        {
+            int[] datas = dataBlockInfo.BlockDatas;
+            int[] marks = dataBlockInfo.Marks;
+            List<int> ids = new List<int>();
+            for (int i = 0; i < marks.Length; i++)
+            {
+                if (marks[i] == -1)
+                {
+                    ids.Add(i);
+                }
+            }
+            for (int i = 0; i < datas.Length; i++)
+            {
+                if (datas[i] != -1)
+                {
+                    DataManager.DataBlockManagers[i].RemoveDatas(datas[i], ids);
                     DataManager.DataBlockManagers[i].RemoveBlock(datas[i]);
                 }
             }
@@ -121,14 +139,22 @@ namespace LE_Entities.Entity
                 LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
                 return;
             }
+            Listener.ActionListener<T>.Listeners[0]?.Invoke(BlockId << DataBlockInfo.BlockSizePow + id, ref data);
             DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = data;
         }
 
-        //public void RemoveData<T>(int id) where T : IData
-        //{
-        //    int blockId = GetBlockId<T>();
-        //    DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = default;
-        //}
+        public void RemoveData<T>(int id) where T : IData
+        {
+            int blockId = CheckBlockId<T>();
+            if (blockId == -1)
+            {
+                LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
+                return;
+            }
+            Listener.ActionListener<T>.Listeners[4]?.Invoke(BlockId << DataBlockInfo.BlockSizePow + id,
+                ref DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id]);
+            DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = default;
+        }
 
         public void SetData<T>(int id, T data) where T : IData
         {
@@ -138,6 +164,7 @@ namespace LE_Entities.Entity
                 LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
                 return;
             }
+            Listener.ActionListener<T>.Listeners[2]?.Invoke(BlockId << DataBlockInfo.BlockSizePow + id, ref data);
             DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = data;
         }
 

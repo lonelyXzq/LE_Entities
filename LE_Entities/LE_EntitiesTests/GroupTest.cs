@@ -77,6 +77,24 @@ namespace LE_EntitiesTests
         }
 
         [TestMethod]
+        public void ReleaseTest()
+        {
+            EntityManager.Init();
+            Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
+            Console.WriteLine(EntityManager.CreateEntity(1, "12"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
+            Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
+            for (int i = 0; i < 64; i++)
+            {
+                EntityManager.CreateEntity(1, null);
+            }
+
+            EntityBlockManager.GetEntityBlock(0).Release();
+
+        }
+
+        [TestMethod]
         public void SetDataTest()
         {
             //Console.WriteLine(typeof(IListener<D1>).FullName);
@@ -91,18 +109,20 @@ namespace LE_EntitiesTests
             entity.SetName("asd");
             Console.WriteLine(entity.Name);
             Console.WriteLine(entity.GetData<D1>().a);
-            Assert.AreEqual(entity.GetData<D1>().a, 233);
-            Lis lis = new Lis();
-            ListenerAction<D1> listenerAction = lis.Execute;
+            Assert.AreEqual(entity.GetData<D1>().a, -2);
+            EntityManager.RemoveEntity(1, 0);
+            //Lis lis = new Lis();
+            //ListenerAction<D1> listenerAction = lis.Execute;
         }
     }
 
-    [ActiveTime(ActiveChance.OnChange)]
+    [ActiveTime(ActiveChance.OnCreate | ActiveChance.OnChange | ActiveChance.OnDestory)]
     public class Lis : IListener<D1>
     {
         public void Execute(int id, ref D1 data)
         {
-            Console.WriteLine("data change");
+            Console.WriteLine("data change:{0}",id);
+            data.a = -1;
         }
     }
 
@@ -112,6 +132,7 @@ namespace LE_EntitiesTests
         public void Execute(int id, ref D1 data)
         {
             Console.WriteLine("data2 change");
+            data.a = -2;
         }
     }
 
