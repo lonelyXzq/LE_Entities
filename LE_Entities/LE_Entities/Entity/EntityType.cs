@@ -6,7 +6,7 @@ using System.Text;
 
 namespace LE_Entities.Entity
 {
-    internal class EntityType:IObject
+    internal class EntityType : IObject
     {
         private string name;
         private readonly int id;
@@ -20,7 +20,7 @@ namespace LE_Entities.Entity
             //this.name = GetType().Name;
             dataInfo = new BitArray(DataManager.Count);
             id = IdManager.IdDeliverer<EntityType>.GetNextId();
-            
+
         }
 
         public void SetEntityType(IEntityType entityType)
@@ -44,10 +44,17 @@ namespace LE_Entities.Entity
 
         public void Execute(EntityBlock entityBlock)
         {
+            if (!entityBlock.Get())
+            {
+
+                LE_Log.Log.Info("ActionOverTime", "entityBlock[ entityType : {0} , entityBlockId : {1}]: operation is over time", name, entityBlock.BlockId);
+                return;
+            }
             for (int i = 0; i < actionCount; i++)
             {
                 groupActions[i].Update(entityBlock);
             }
+            entityBlock.Re();
         }
 
         public string Name => name;

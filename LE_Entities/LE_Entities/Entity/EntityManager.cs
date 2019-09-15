@@ -12,8 +12,6 @@ namespace LE_Entities.Entity
 
         private static readonly EntityGroup[] entityGroups;
 
-
-
         static EntityManager()
         {
             //DataManager.Init();

@@ -58,6 +58,10 @@
     <Compile Include="Template\TemplateTests.cs" />
     <Compile Include="TestReflect.cs" />
     <Compile Include="ToolDataTests.cs" />
+    <Compile Include="Tool\HilbertTests.cs" />
+    <Compile Include="Tool\QuadtreeTests.cs" />
+    <Compile Include="Tool\ServerTests.cs" />
+    <Compile Include="Tool\StructListTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

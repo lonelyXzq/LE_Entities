@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace LE_Entities.Entity
 {
@@ -19,10 +20,13 @@ namespace LE_Entities.Entity
 
         public int Count => dataBlockInfo.Count;
 
+        private int mark;
+
         public EntityBlock(int id, EntityType entityType)
         {
             this.entityType = entityType;
             this.id = id;
+            mark = 0;
             int[] datas = new int[DataManager.Count];
             for (int i = 0; i < DataManager.Count; i++)
             {
@@ -38,9 +42,28 @@ namespace LE_Entities.Entity
             dataBlockInfo = new DataBlockInfo(id, datas);
         }
 
+        public bool Get()
+        {
+            if (Interlocked.CompareExchange(ref mark, 1, 0) == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public void Re()
+        {
+            mark = 0;
+        }
+
         public void Execute()
         {
+            if (Interlocked.CompareExchange(ref mark, 1, 0) != 0)
+            {
+                return;
+            }
             entityType.Execute(this);
+            mark = 0;
         }
 
         public int AddEntity(string name)
