@@ -11,7 +11,7 @@ namespace LE_EntitiesTests
     [TestClass]
     public class SListTests
     {
-        private ISList<A> list = new SList<A>();
+        private ISList<A> list = new SteadyList<A>();
 
         public void Init()
         {
@@ -65,6 +65,28 @@ namespace LE_EntitiesTests
             list.Remove(1);
             list.Remove(0);
             Assert.AreEqual(list.Length, 0);
+            Assert.AreEqual(list.Count, 0);
+        }
+
+        [TestMethod]
+        public void AddRemoveTest()
+        {
+            list.Add(new A(0));
+            list.Add(new A(1));
+            list.Add(new A(2));
+            list.Remove(1);
+            list.Remove(2);
+            list.Remove(0);
+            list.Add(new A(2));
+            list.Add(new A(1));
+            list.Add(new A(0));
+            list.Remove(0);
+            list.Remove(1);
+            list.Remove(2);
+            Assert.AreEqual(list.Check(0), false);
+            Assert.AreEqual(list.Check(1), false);
+            Assert.AreEqual(list.Check(2), false);
+            Assert.AreEqual(list.Length, 2);
             Assert.AreEqual(list.Count, 0);
         }
 

@@ -16,7 +16,7 @@ namespace LE_Entities.Tool
         bool Check(int index);
         int Add(T data);
 
-        int AddId();
+        //int AddId();
 
         void Remove(int index);
         void Clear();

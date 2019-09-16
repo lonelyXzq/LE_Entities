@@ -4,6 +4,7 @@ using System.Text;
 
 namespace LE_Entities.Tool
 {
+    //TODO: debug SList
     class SList<T> : ISList<T>
     {
         private readonly List<ListData> datas;
@@ -57,31 +58,31 @@ namespace LE_Entities.Tool
             return re;
         }
 
-        public int AddId()
-        {
-            int re;
-            if (addPoint < 0)
-            {
-                datas.Add(new ListData(-1, default));
-                re = count;
-                count++;
-                maxLength++;
-            }
-            else
-            {
-                re = addPoint;
-                ListData listData = datas[addPoint];
-                listData.Data = default;
-                addPoint = listData.Id;
-                listData.Id = -1;
-                count++;
-            }
-            return re;
-        }
+        //public int AddId()
+        //{
+        //    int re;
+        //    if (addPoint < 0)
+        //    {
+        //        datas.Add(new ListData(-1, default));
+        //        re = count;
+        //        count++;
+        //        maxLength++;
+        //    }
+        //    else
+        //    {
+        //        re = addPoint;
+        //        ListData listData = datas[addPoint];
+        //        listData.Data = default;
+        //        addPoint = listData.Id;
+        //        listData.Id = -1;
+        //        count++;
+        //    }
+        //    return re;
+        //}
 
         public bool Check(int index)
         {
-            if (index < 0 || index >= datas.Count)
+            if (index < 0 || index >= maxLength)
             {
                 return false;
             }
@@ -134,28 +135,29 @@ namespace LE_Entities.Tool
 
         public void Remove(int index)
         {
-            if (index == maxLength - 1)
+            if (!Check(index))
             {
-                datas.RemoveAt(index);
-                count--;
-                maxLength--;
                 return;
             }
-            if (Check(index))
+            //if (index == maxLength - 1)
+            //{
+            //    datas.RemoveAt(index);
+            //    count--;
+            //    maxLength--;
+            //    return;
+            //}
+            datas[index].Data = default;
+            datas[index].Id = -2;
+            count--;
+            if (lastPoint > -1)
             {
-                datas[index].Data = default;
-                datas[index].Id = -2;
-                count--;
-                if (lastPoint > -1)
-                {
-                    datas[lastPoint].Id = index;
-                }
-                else
-                {
-                    addPoint = index;
-                }
-                lastPoint = index;
+                datas[lastPoint].Id = index;
             }
+            else
+            {
+                addPoint = index;
+            }
+            lastPoint = index;
         }
 
         public class ListData

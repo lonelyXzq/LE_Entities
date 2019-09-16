@@ -8,11 +8,13 @@ namespace LE_Entities.Entity
     //TODO: BlockManager
     static class EntityBlockManager
     {
-        private static readonly SList<EntityBlock> entities;
+        private static readonly ISList<EntityBlock> entities;
+
+        internal static ISList<EntityBlock> Entities => entities;
 
         static EntityBlockManager()
         {
-            entities = new SList<EntityBlock>();
+            entities = new SteadyList<EntityBlock>();
         }
 
         public static EntityBlock GetEntityBlock(int id)
@@ -28,7 +30,7 @@ namespace LE_Entities.Entity
         public static int AddBlock(EntityType entityType)
         {
 
-            int id = entities.AddId();
+            int id = entities.Add(null);
             EntityBlock entityBlock = new EntityBlock(id, entityType);
 
             entities[id] = entityBlock;
@@ -45,7 +47,12 @@ namespace LE_Entities.Entity
             }
         }
 
-        public static void ReleaseBlock(int id)
+        public static void Release()
+        {
+            entities.Clear();
+        }
+
+        internal static void ReleaseBlock(int id)
         {
             if (!entities.Check(id))
             {
@@ -55,5 +62,6 @@ namespace LE_Entities.Entity
             entities[id].Release();
             entities.Remove(id);
         }
+
     }
 }

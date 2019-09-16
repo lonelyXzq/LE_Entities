@@ -29,6 +29,11 @@ namespace LE_Entities.Tool
             return Datas[i];
         }
 
+        public void ChangeData(int i, int entityId, Execute<T> execute)
+        {
+            execute?.Invoke(entityId, ref Datas[i]);
+        }
+
         public void SetData(int i, T data)
         {
             Datas[i] = data;

@@ -18,6 +18,13 @@ namespace LE_EntitiesTests
     [TestClass]
     public class GroupTest
     {
+
+        [TestInitialize]
+        public void Init()
+        {
+            EntityManager.Init();
+        }
+
         [TestMethod]
         public void InitTest()
         {
@@ -29,7 +36,7 @@ namespace LE_EntitiesTests
             //EntityManager.DataChain.Add(entity);
             //Console.WriteLine(typeof(SystemAction<A1, B1>).FullName);
             //ActionManager.Init();
-            EntityManager.Init();
+            EntityManager.Release();
             for (int i = 0; i < 64; i++)
             {
                 EntityManager.CreateEntity(1, null);
@@ -54,13 +61,13 @@ namespace LE_EntitiesTests
         [TestMethod]
         public void ExecuteTest()
         {
-            EntityManager.Init();
+            EntityManager.Release();
             Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
             Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
-            EntityManager.RemoveEntity(ObjectIdManager.GetId(typeof(GroupB)), 0);
+            //EntityManager.RemoveEntity(ObjectIdManager.GetId(typeof(GroupB)), 0);
             //EntityManager.Execute();
             //Thread.Sleep(100);
             //EntityManager.Execute();
@@ -85,50 +92,79 @@ namespace LE_EntitiesTests
         [TestMethod]
         public void ReleaseTest()
         {
-            EntityManager.Init();
+            EntityManager.Release();
             Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
             Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
+            EntityManager.RemoveEntity(ObjectIdManager.GetId(typeof(GroupB)), 0);
             for (int i = 0; i < 64; i++)
             {
                 EntityManager.CreateEntity(1, null);
             }
-
-            EntityBlockManager.GetEntityBlock(0).Release();
-
+            EntityManager.GetEntity(1);
+            // EntityBlockManager.ReleaseBlock(0);
+            EntityManager.Release();
         }
 
         [TestMethod]
         public void SetDataTest()
         {
             //Console.WriteLine(typeof(IListener<D1>).FullName);
-            EntityManager.Init();
+            EntityManager.Release();
+            //Console.WriteLine(DataInfo<D1>.DataBlockManager);
             Console.WriteLine(EntityManager.CreateEntity(1, "123asd"));
             Console.WriteLine(EntityManager.CreateEntity(1, "1234"));
             Console.WriteLine(EntityManager.CreateEntity(1, "12"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12345"));
             Console.WriteLine(EntityManager.CreateEntity(0, "12367"));
             Entity entity = EntityManager.GetEntity(0);
-            entity.SetData(new D1(233));
+            //Thread.Sleep(100);
+            //entity.SetData(new D1(233));
+            //Console.WriteLine(DataInfo<D1>.DataId);
+            Console.WriteLine(entity.GetData<D1>().a);
+            //entity.SetData_UnSafy(DataInfo<D1>.DataId, new D1(233));
+
+            //DateTime d1 = DateTime.Now;
+            //for (int i = 0; i < 1000000; i++)
+            //{
+            //entity.SetData_UnSafy(DataInfo<D1>.DataId, new D1(233));//90ms
+            //entity.SetData(new D1(233));//68ms
+            //}
+            //Console.WriteLine((DateTime.Now - d1).TotalMilliseconds);
+
+
             entity.SetName("asd");
             Console.WriteLine(entity.Name);
             Console.WriteLine(entity.GetData<D1>().a);
-            Assert.AreEqual(entity.GetData<D1>().a, -2);
+
+            entity.ChangeData<D1>(Ex);
+            Assert.AreEqual(entity.GetData<D1>().a, 233);
+            entity.SetData(new D1(234));
+            Assert.AreEqual(entity.GetData<D1>().a, 234);
+            entity.SetData_UnSafy(DataInfo<D1>.DataId, new D1(235));
+            Assert.AreEqual(entity.GetData<D1>().a, 235);
             EntityManager.RemoveEntity(1, 0);
             //Lis lis = new Lis();
             //ListenerAction<D1> listenerAction = lis.Execute;
         }
+
+        public void Ex(int id, ref D1 d1)
+        {
+            d1.a = 233;
+        }
     }
 
-    [ActiveTime(ActiveChance.OnCreate | ActiveChance.OnChange | ActiveChance.OnDestory)]
+    [ActiveTime(ActiveChance.OnChange | ActiveChance.OnDestory)]
     public class Lis : IListener<D1>
     {
         public void Execute(int id, ref D1 data)
         {
-            Console.WriteLine("data change:{0}", id);
-            data.a = -1;
+
+            LE_Log.Log.Debug("datachange", "Data: {0} , entityId : {1} action:{2} ", data.GetType(), id, GetType());
+            //Console.WriteLine("data change:{0}", id);
+            //data.a = -1;
         }
     }
 
@@ -137,8 +173,9 @@ namespace LE_EntitiesTests
     {
         public void Execute(int id, ref D1 data)
         {
-            Console.WriteLine("data2 change");
-            data.a = -2;
+            LE_Log.Log.Debug("datachange", "Data: {0} , entityId : {1} action:{2} ", data.GetType(), id, GetType());
+            //Console.WriteLine("data2 change");
+            //data.a = -2;
         }
     }
 

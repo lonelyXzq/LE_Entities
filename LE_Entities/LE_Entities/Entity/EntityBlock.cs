@@ -91,7 +91,7 @@ namespace LE_Entities.Entity
             }
         }
 
-        public void Release()
+        internal void Release()
         {
             int[] datas = dataBlockInfo.BlockDatas;
             int[] marks = dataBlockInfo.Marks;
@@ -111,6 +111,8 @@ namespace LE_Entities.Entity
                     DataManager.DataBlockManagers[i].RemoveBlock(datas[i]);
                 }
             }
+
+            LE_Log.Log.Debug("EntityBlockRelease", "entityBlock[id : {0}] release", BlockId);
         }
 
         private int GetBlockId<T>() where T : IData
@@ -162,6 +164,8 @@ namespace LE_Entities.Entity
                 LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
                 return;
             }
+            //Console.WriteLine(blockId);
+            //Console.WriteLine(DataInfo<T>.DataBlockManager.CheckBlock(0));
             Listener.ActionListener<T>.Listeners[0]?.Invoke(BlockId << DataBlockInfo.BlockSizePow + id, ref data);
             DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = data;
         }
@@ -189,6 +193,32 @@ namespace LE_Entities.Entity
             }
             Listener.ActionListener<T>.Listeners[2]?.Invoke(BlockId << DataBlockInfo.BlockSizePow + id, ref data);
             DataInfo<T>.DataBlockManager.GetBlock(blockId).Datas[id] = data;
+        }
+
+        public void ChangeData<T>(int id, Execute<T> execute) where T : IData
+        {
+            int blockId = CheckBlockId<T>();
+            if (blockId == -1)
+            {
+                LE_Log.Log.Error("Data error", "dataType: {0} is not exists", typeof(T));
+                return;
+            }
+            var block = DataInfo<T>.DataBlockManager.GetBlock(blockId);
+            int entityId = BlockId << DataBlockInfo.BlockSizePow + id;
+            block.ChangeData(id, entityId, execute);
+            Listener.ActionListener<T>.Listeners[2]?.Invoke(entityId, ref block.Datas[id]);
+            //DataInfo<T>.DataBlockManager.ChanngeData(blockId, id, BlockId << DataBlockInfo.BlockSizePow + id, execute);
+        }
+
+        public void SetData_UnSafy(int dataTypeId, int id, IData data)
+        {
+            int bid = dataBlockInfo.BlockDatas[dataTypeId];
+            if (bid == -1)
+            {
+                LE_Log.Log.Error("Data error", "dataType: {0} is not exists", data.GetType());
+                return;
+            }
+            DataManager.DataBlockManagers[dataTypeId].SetData(bid, id, data);
         }
 
         internal DataBlockInfo DataBlockInfo => dataBlockInfo;

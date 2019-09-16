@@ -38,6 +38,16 @@ namespace LE_Entities.Entity
 
         }
 
+        public void ChangeData<T>(Execute<T> execute) where T : IData
+        {
+            entityData.EntityBlock.ChangeData(entityData.LocalId, execute);
+        }
+
+        public void SetData_UnSafy(int datatTypeId,IData data)
+        {
+            entityData.EntityBlock.SetData_UnSafy(datatTypeId,entityData.LocalId, data);
+        }
+
         public void SetName(string name)
         {
             entityData.Name = name;

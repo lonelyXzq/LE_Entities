@@ -36,8 +36,6 @@ namespace LE_Entities.Data
                 dataBlockManagers[i] = (IDataBlockManager)type1.MakeGenericType(types[i]).GetProperty("DataBlockManager", BindingFlags.Static | BindingFlags.NonPublic)
                     .GetValue(null);
 
-
-
                 LE_Log.Log.Info("DataRegister", "DataId: {0}  DataName: {1}", i, types[i].FullName);
             }
         }

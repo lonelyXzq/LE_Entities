@@ -90,7 +90,8 @@ namespace LE_Entities.Entity
         {
             foreach (var data in blocks.Values)
             {
-                data.Release();
+                //data.Release();
+                EntityBlockManager.ReleaseBlock(data.BlockId);
             }
             blocks.Clear();
             unFullBlockIds.Clear();

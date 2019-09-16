@@ -63,6 +63,17 @@ namespace LE_Entities.Entity
             }
         }
 
+        public static void Release()
+        {
+            for (int i = 0; i < entityGroups.Length; i++)
+            {
+                LE_Log.Log.Debug("Type release", "type[id; {0} , name: {1} ] release", entityGroups[i].Id, entityGroups[i].Name);
+                entityGroups[i].OnEnd();
+
+            }
+            EntityBlockManager.Release();
+        }
+
         //public static void ExecuteGroup(int id)
         //{
         //    GroupManager.GetEntityType(id).;
