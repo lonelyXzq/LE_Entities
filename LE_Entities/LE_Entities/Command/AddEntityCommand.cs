@@ -9,19 +9,33 @@ namespace LE_Entities.Command
     {
         private int typeId;
 
-        public AddEntityCommand()
-        {
+        private string name;
 
+        private int id;
+
+        private readonly int commandId;
+
+        public int CommandId => commandId;
+
+        public AddEntityCommand(int commandId)
+        {
+            this.commandId = commandId;
         }
 
-        public void SetCommand(int typeId)
+        public void SetCommand(int typeId,string name)
         {
-            
+            this.typeId = typeId;
+            this.name = name;
         }
 
         public void Execute()
         {
-            //Entity.EntityManager.GetEntity(id).SetData<T>();
+            id = Entity.EntityManager.CreateEntity(typeId,name);
+        }
+
+        public object GetData()
+        {
+            return id;
         }
     }
 }

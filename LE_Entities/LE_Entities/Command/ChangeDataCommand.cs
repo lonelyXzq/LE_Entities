@@ -11,9 +11,13 @@ namespace LE_Entities.Command
         private Execute<T> execute;
         private int id;
 
-        public ChangeDataCommand()
-        {
+        private readonly int commandId;
 
+        public int CommandId => commandId;
+
+        public ChangeDataCommand(int commandId)
+        {
+            this.commandId = commandId;
         }
 
         public void SetCommand(Execute<T> execute, int id)
@@ -25,6 +29,11 @@ namespace LE_Entities.Command
         public void Execute()
         {
             Entity.EntityManager.GetEntity(id).ChangeData(execute);
+        }
+
+        public object GetData()
+        {
+            return null;
         }
     }
 }

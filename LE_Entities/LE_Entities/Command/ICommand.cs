@@ -7,5 +7,9 @@ namespace LE_Entities.Command
     public interface ICommand
     {
         void Execute();
+
+        object GetData();
+
+        int CommandId { get; }
     }
 }
